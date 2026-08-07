@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold: #C9963A;
+  --gold-light: #E8C96A;
+  --gold-dark: #A87B2C;
+  --bg-main: #0C0A07;
+  --ivory: #F5F0E8;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+body {
+  background-color: #0C0A07;
+  color: #F5F0E8;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #0C0A07; }
+::-webkit-scrollbar-thumb { background: #6B4918; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #C9963A; }
+
+/* Selection */
+::selection { background: rgba(201,150,58,0.25); color: #F5F0E8; }
+
+/* Page transitions */
+.page-enter-active, .page-leave-active { transition: opacity 0.3s ease; }
+.page-enter-from, .page-leave-to { opacity: 0; }
+
+/* Font helpers */
+.font-display { font-family: 'Cinzel', serif !important; }
+.font-mono-custom { font-family: 'Space Mono', monospace !important; }
+
+/* Gold gradient text */
+.gold-text {
+  background: linear-gradient(135deg, #A87B2C, #E8C96A, #C9963A, #F0D98A, #C9963A);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gold-text { animation: none; }
+}
+
+@keyframes shimmer     { to { background-position: 200% center; } }
+@keyframes subtleZoom  { from { transform: scale(1); } to { transform: scale(1.06); } }
+@keyframes ticker      { from { transform: translateX(0); } to { transform: translateX(-25%); } }
+
+/* ────────────────────────────────────────────────────────────
+   Reveal-on-scroll (pengganti ringan untuk library "aos").
+   Markup tetap pakai data-aos="fade-up" / "fade-down" / "fade-left" /
+   "fade-right", cuma "mesin" animasinya lewat plugins/reveal.client.ts
+   (IntersectionObserver bawaan browser, tanpa dependency tambahan).
+   ──────────────────────────────────────────────────────────── */
+[data-aos] {
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
+}
+[data-aos="fade-up"]    { transform: translateY(24px); }
+[data-aos="fade-down"]  { transform: translateY(-24px); }
+[data-aos="fade-left"]  { transform: translateX(24px); }
+[data-aos="fade-right"] { transform: translateX(-24px); }
+
+[data-aos].aos-animate {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-aos] { transition: none; }
+}

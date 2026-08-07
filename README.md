@@ -1,5 +1,5 @@
 # Lemillion — Web Developer Portfolio
-**Nuxt 3 · Tailwind CSS · Aiven for PostgreSQL**
+**Nuxt 3 · Tailwind CSS · Neon PostgreSQL**
 
 Portfolio untuk **Miftah Pauzan Jamil (Lemillion)** — Web Developer di Tasikmalaya, berkarir sejak 2022.
 
@@ -16,18 +16,18 @@ Buka http://localhost:3000
 
 ---
 
-## 🗄️ Setup Aiven for PostgreSQL (jalankan sekali)
+## 🗄️ Setup Neon PostgreSQL (jalankan sekali)
 
-1. Buat service **PostgreSQL** di [Aiven Console](https://console.aiven.io/) (paket gratis "Hobbyist" cukup untuk mulai).
-2. Salin **Service URI** dari halaman *Overview* service kamu.
+1. Buat project di [Neon Console](https://console.neon.tech/) (free tier cukup untuk mulai).
+2. Salin **Connection string** dari dashboard project kamu (pilih yang *pooled connection* kalau mau deploy ke Vercel/serverless).
 3. Isi `.env`:
    ```
-   AIVEN_DATABASE_URL=postgres://avnadmin:xxxxx@xxxxx.aivencloud.com:xxxxx/defaultdb?sslmode=require
+   DATABASE_URL=postgres://user:xxxxx@ep-xxxxx.region.aws.neon.tech/neondb?sslmode=require
    ```
-4. Jalankan schema & seed lewat `psql` (atau paste isinya ke Aiven Console → Query Editor):
+4. Jalankan schema & seed lewat `psql` (atau paste isinya ke Neon Console → SQL Editor):
    ```bash
-   psql "$AIVEN_DATABASE_URL" -f aiven/01_schema.sql
-   psql "$AIVEN_DATABASE_URL" -f aiven/02_seed.sql
+   psql "$DATABASE_URL" -f neon/01_schema.sql
+   psql "$DATABASE_URL" -f neon/02_seed.sql
    ```
 5. Generate password admin untuk `/login`:
    ```bash
@@ -39,10 +39,10 @@ Buka http://localhost:3000
 
 ## 📊 Arsitektur Data
 
-Semua data (**profil, portfolio, services, testimonials, achievements, availability, inquiries**) disimpan di Aiven PostgreSQL dan diakses lewat API internal Nuxt (`server/api/*`) — bukan langsung dari browser. Ini lebih aman karena kredensial database tidak pernah sampai ke client.
+Semua data (**profil, portfolio, services, testimonials, achievements, availability, inquiries**) disimpan di Neon PostgreSQL dan diakses lewat API internal Nuxt (`server/api/*`) — bukan langsung dari browser. Ini lebih aman karena kredensial database tidak pernah sampai ke client.
 
 ```
-Browser  →  /api/*  (Nuxt server routes, server/api/)  →  Aiven PostgreSQL (pg Pool)
+Browser  →  /api/*  (Nuxt server routes, server/api/)  →  Neon PostgreSQL (pg Pool)
 ```
 
 - **Publik** (GET): profile, portfolio, categories, services, testimonials, awards, availability — tidak perlu login.
@@ -78,7 +78,7 @@ Gambar (screenshot proyek, foto profil) **bukan** disimpan sebagai file upload �
 ## 🔑 Environment Variables (`.env`)
 
 ```env
-AIVEN_DATABASE_URL=postgres://user:pass@host:port/db?sslmode=require
+DATABASE_URL=postgres://user:pass@host:port/db?sslmode=require
 ADMIN_EMAIL=miftahpauzanjamil@gmail.com
 ADMIN_PASSWORD_HASH=          # hasil dari scripts/hash-password.mjs
 SESSION_SECRET=               # string acak panjang
@@ -89,7 +89,7 @@ SESSION_SECRET=               # string acak panjang
 ## 📁 Struktur Proyek
 
 ```
-aiven/              → SQL schema & seed untuk Aiven PostgreSQL
+neon/               → SQL schema & seed untuk Neon PostgreSQL
 server/api/         → API routes (profile, portfolio, services, dll)
 server/utils/       → koneksi DB (db.ts) & auth session (auth.ts)
 composables/        → useSiteData, useProfile, usePortfolio, useInquiry, useAvailability, useAuth
@@ -99,6 +99,20 @@ scripts/            → hash-password.mjs (generate ADMIN_PASSWORD_HASH)
 
 ---
 
+---
+
+## 🔍 SEO
+
+Website ini sudah dilengkapi:
+- **Meta tags lengkap** (title, description, keywords, Open Graph, Twitter Card) — title & description tiap halaman menyebut nama lengkap **"Miftah Pauzan Jamil"** dan alias **"Lemillion"**.
+- **JSON-LD structured data** (`Person` + `WebSite`, di `app.vue`) supaya Google bisa menampilkan rich result / knowledge panel untuk pencarian nama.
+- **`robots.txt`** (`public/robots.txt`) — izinkan crawl semua halaman publik, blok `/admin` dan `/login`.
+- **`sitemap.xml`** dinamis (`server/routes/sitemap.xml.ts`) — otomatis include semua proyek portfolio yang published, tanpa perlu rebuild.
+
+Setelah deploy, daftarkan `https://miftahpj.web.id` ke [Google Search Console](https://search.google.com/search-console) dan submit `sitemap.xml`-nya supaya lebih cepat terindex untuk pencarian "Miftah Pauzan Jamil".
+
+---
+
 ## 🛠️ Deploy
 
-Cocok untuk Vercel, Netlify, atau VPS apa saja yang mendukung Node.js (Nitro preset default `node-server`). Pastikan semua environment variable di atas diisi di dashboard hosting kamu, dan Aiven service kamu mengizinkan koneksi dari IP hosting (atau pakai opsi allow-all IP kalau memang publik).
+Cocok untuk Vercel, Netlify, atau VPS apa saja yang mendukung Node.js (Nitro preset default `node-server`). Pastikan semua environment variable di atas diisi di dashboard hosting kamu. Neon otomatis publicly accessible (tidak perlu allowlist IP seperti Aiven), tapi kalau deploy ke platform serverless (Vercel/Netlify functions), pakai *pooled connection string* Neon (yang ada akhiran `-pooler` di hostname) supaya tidak cepat kehabisan slot koneksi.
