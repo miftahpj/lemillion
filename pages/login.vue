@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-[#0C0A07] flex items-center justify-center relative overflow-hidden">
-    <div class="absolute w-[500px] h-[500px] rounded-full pointer-events-none" style="background:rgba(201,150,58,0.05);filter:blur(150px);top:-100px;right:-100px;" />
-    <div class="absolute w-[400px] h-[400px] rounded-full pointer-events-none" style="background:rgba(201,150,58,0.04);filter:blur(120px);bottom:-50px;left:-100px;" />
+    <div class="hidden md:block absolute w-[500px] h-[500px] rounded-full pointer-events-none" style="background:rgba(201,150,58,0.05);filter:blur(150px);top:-100px;right:-100px;" />
+    <div class="hidden md:block absolute w-[400px] h-[400px] rounded-full pointer-events-none" style="background:rgba(201,150,58,0.04);filter:blur(120px);bottom:-50px;left:-100px;" />
 
     <div class="relative z-10 w-full max-w-md px-8">
       <div class="text-center mb-14">

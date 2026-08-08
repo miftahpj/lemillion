@@ -29,7 +29,7 @@ useHead(() => {
               '@type': 'Person',
               '@id': `${siteUrl}/#person`,
               name: p?.name || 'Miftah Pauzan Jamil',
-              alternateName: 'Lemillion',
+              alternateName: ['Lemillion', 'Miftah Fauzan Jamil'],
               jobTitle: p?.tagline || 'Web Developer',
               description: p?.bio || undefined,
               url: siteUrl,

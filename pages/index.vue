@@ -11,6 +11,8 @@
           class="w-full h-full object-cover object-center"
           style="animation:subtleZoom 20s ease-in-out infinite alternate;"
           loading="eager"
+          fetchpriority="high"
+          decoding="async"
           @error="heroImgUrl = ''"
         />
         <div class="absolute inset-0" style="background:radial-gradient(ellipse at 70% 30%,rgba(201,150,58,0.09) 0%,transparent 60%),radial-gradient(ellipse at 20% 70%,rgba(201,150,58,0.05) 0%,transparent 50%),linear-gradient(135deg,#0C0A07 0%,#1a1208 50%,#0C0A07 100%);" />
@@ -22,7 +24,7 @@
         <div v-for="i in 5" :key="i" class="absolute top-0 bottom-0 w-px" :style="`left:${i*20}%;background:rgba(201,150,58,0.03);`" />
       </div>
 
-      <div class="relative z-10 max-w-7xl mx-auto px-8 md:px-16 pb-28 pt-44 w-full">
+      <div class="relative z-10 max-w-7xl mx-auto px-8 md:px-16 pb-28 pt-44 w-full flex items-end justify-between gap-10">
         <div class="max-w-3xl">
           <div class="flex items-center gap-4 mb-8" data-aos="fade-up">
             <div class="h-px w-16" style="background:linear-gradient(to right,transparent,#C9963A);" />
@@ -58,6 +60,17 @@
             </NuxtLink>
           </div>
         </div>
+
+        <div class="hidden lg:block flex-shrink-0 self-start -mt-8" data-aos="fade-left" data-aos-delay="200">
+          <ClientOnly>
+            <NameCard
+              v-if="isDesktop"
+              :avatar-url="profileAvatarUrl"
+              :name="profile?.name ?? 'Miftah Pauzan Jamil'"
+              :role="profile?.tagline ?? 'Web Developer'"
+            />
+          </ClientOnly>
+        </div>
       </div>
 
       <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2">
@@ -80,7 +93,7 @@
 
     <!-- ══ PORTFOLIO PREVIEW ══ -->
     <section class="py-32 bg-[#0C0A07] relative">
-      <div class="absolute left-0 top-1/2 -translate-y-1/2 w-80 h-80 rounded-full pointer-events-none" style="background:rgba(201,150,58,0.04);filter:blur(100px);" />
+      <div class="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-80 h-80 rounded-full pointer-events-none" style="background:rgba(201,150,58,0.04);filter:blur(100px);" />
       <div class="max-w-7xl mx-auto px-8">
 
         <div class="mb-14">
@@ -110,7 +123,7 @@
                 :src="getImageUrl(item.cover_url)"
                 :alt="item.title"
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                loading="lazy"
+                loading="lazy" decoding="async"
               />
               <div v-else class="w-full h-full" :style="getCategoryGradient(item.categories?.slug)" />
 
@@ -145,7 +158,7 @@
 
     <!-- ══ ABOUT ══ -->
     <section class="py-32 bg-[#080604] relative">
-      <div class="absolute right-0 top-1/4 w-96 h-96 rounded-full pointer-events-none" style="background:rgba(201,150,58,0.04);filter:blur(130px);" />
+      <div class="hidden md:block absolute right-0 top-1/4 w-96 h-96 rounded-full pointer-events-none" style="background:rgba(201,150,58,0.04);filter:blur(130px);" />
       <div class="max-w-7xl mx-auto px-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div class="relative" data-aos="fade-right">
@@ -156,7 +169,7 @@
                 :src="profileAvatarUrl"
                 :alt="profile?.name"
                 class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
-                loading="lazy"
+                loading="lazy" decoding="async"
                 @error="profileAvatarUrl = ''"
               />
               <div class="absolute inset-0 flex items-center justify-center" :class="profileAvatarUrl ? 'opacity-0' : ''">
@@ -320,12 +333,16 @@
 <script setup lang="ts">
 useSeoMeta({
   title: 'Miftah Pauzan Jamil (Lemillion) — Web Developer Tasikmalaya',
-  description: 'Portfolio resmi Miftah Pauzan Jamil, dikenal sebagai Lemillion — Web Developer di Tasikmalaya sejak 2022. Landing page, company profile, hingga sistem informasi.',
+  description: 'Portfolio resmi Miftah Pauzan Jamil — sering juga dicari dengan ejaan Miftah Fauzan Jamil — dikenal sebagai Lemillion, Web Developer di Tasikmalaya sejak 2022. Landing page, company profile, hingga sistem informasi.',
   ogTitle: 'Miftah Pauzan Jamil (Lemillion) — Web Developer Tasikmalaya',
-  ogDescription: 'Portfolio resmi Miftah Pauzan Jamil, dikenal sebagai Lemillion — Web Developer di Tasikmalaya sejak 2022.',
+  ogDescription: 'Portfolio resmi Miftah Pauzan Jamil (kadang dieja Miftah Fauzan Jamil), dikenal sebagai Lemillion — Web Developer di Tasikmalaya sejak 2022.',
 })
 
 const { fetchAll, fetchFeaturedPortfolio, profile, servicesList, testimonials, loading, getImageUrl, getProfileImageUrl, formatPrice } = useSiteData()
+
+// NameCard cuma dibuat (mount) di layar besar, supaya HP/tablet tidak
+// menjalankan loop animasi drag-nya sama sekali (hemat CPU & baterai).
+const isDesktop = useMediaQuery('(min-width: 1024px)')
 
 const featuredPortfolio = ref<any[]>([])
 const heroImgUrl        = ref('')

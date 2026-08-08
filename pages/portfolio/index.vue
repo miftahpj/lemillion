@@ -54,7 +54,7 @@
               :src="getImageUrl(item.cover_url)"
               :alt="item.title"
               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              loading="lazy"
+              loading="lazy" decoding="async"
             />
             <div v-else class="w-full h-full" :style="getCategoryGradient(item.categories?.slug)" />
 

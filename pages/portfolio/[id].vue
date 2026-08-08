@@ -72,7 +72,7 @@
 
         <!-- Gallery -->
         <div v-if="item.gallery_urls?.length" class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <img v-for="(url, i) in item.gallery_urls" :key="i" :src="getImageUrl(url)" :alt="`${item.title} screenshot ${Number(i)+1}`" class="w-full object-cover" loading="lazy" />
+          <img v-for="(url, i) in item.gallery_urls" :key="i" :src="getImageUrl(url)" :alt="`${item.title} screenshot ${Number(i)+1}`" class="w-full object-cover" loading="lazy" decoding="async" />
         </div>
       </div>
 
@@ -82,7 +82,7 @@
           <p class="font-mono text-[9px] tracking-[0.5em] uppercase mb-10 text-center" style="color:rgba(201,150,58,0.4);">More Projects</p>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <NuxtLink v-for="r in related" :key="r.id" :to="`/portfolio/${r.id}`" class="group relative aspect-[4/5] overflow-hidden" style="background:#1a1208;">
-              <img v-if="getImageUrl(r.cover_url)" :src="getImageUrl(r.cover_url)" :alt="r.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+              <img v-if="getImageUrl(r.cover_url)" :src="getImageUrl(r.cover_url)" :alt="r.title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" decoding="async" />
               <div v-else class="w-full h-full" :style="getCategoryGradient(r.categories?.slug)" />
               <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A07]/85 via-transparent to-transparent" />
               <div class="absolute bottom-0 left-0 right-0 p-5">

@@ -50,6 +50,15 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .gold-text { animation: none; }
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}
+
+/* Intro overlay: kalau sudah pernah ditampilkan sesi ini (atau user minta
+   reduce-motion), sembunyikan SEBELUM frame pertama dicat — dicek lewat
+   blocking inline script di <head> (lihat nuxt.config.ts). Ini mencegah
+   flash beranda muncul dulu baru intro. */
+.lm-intro-skip #lm-intro-overlay {
+  display: none !important;
 }
 
 @keyframes shimmer     { to { background-position: 200% center; } }

@@ -6,7 +6,7 @@
       <div class="absolute inset-0 z-0">
         <img v-if="heroUrl" :src="heroUrl" alt="About hero"
           class="w-full h-full object-cover object-top opacity-35"
-          loading="lazy"
+          loading="eager" fetchpriority="high" decoding="async"
           @error="heroUrl = ''" />
         <div class="absolute inset-0" style="background:radial-gradient(ellipse at 60% 40%,rgba(201,150,58,0.08) 0%,transparent 60%),linear-gradient(135deg,#0C0A07 0%,#1a1208 50%,#0C0A07 100%);" />
         <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A07] via-[#0C0A07]/40 to-transparent" />
@@ -19,6 +19,9 @@
         <h1 class="font-display uppercase leading-none gold-text" style="font-size:clamp(5rem,11vw,10rem);" data-aos="fade-up" data-aos-delay="100">
           {{ profile?.name?.split(' ')[0] ?? 'Miftah' }}<br/>{{ profile?.name?.split(' ').slice(1).join(' ') ?? 'Pauzan Jamil' }}
         </h1>
+        <p class="font-body text-xs mt-4" style="color:rgba(245,240,232,0.24);" data-aos="fade-up" data-aos-delay="150">
+          Nama saya kadang dieja "Miftah Fauzan Jamil" — ejaan resminya adalah Miftah Pauzan Jamil.
+        </p>
       </div>
     </div>
 
@@ -34,7 +37,7 @@
             <div class="relative z-10 aspect-[3/4] overflow-hidden" style="background:linear-gradient(135deg,#1a1208,#2a1e10,#1a1208);">
               <img v-if="avatarUrl" :src="avatarUrl" :alt="profile?.name"
                 class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
-                loading="lazy"
+                loading="lazy" decoding="async"
                 @error="avatarUrl = ''" />
               <div class="absolute inset-0 flex items-center justify-center" :class="avatarUrl ? 'opacity-0' : ''">
                 <span class="font-display" style="font-size:9rem;color:rgba(201,150,58,0.07);">{{ profile?.name?.charAt(0) ?? 'M' }}</span>
@@ -149,7 +152,7 @@ const socialLinks = computed(() => [
 
 useSeoMeta(() => ({
   title: `Tentang ${profile.value?.name ?? 'Miftah Pauzan Jamil'} (Lemillion) — Web Developer`,
-  description: `Kenali ${profile.value?.name ?? 'Miftah Pauzan Jamil'}, dikenal sebagai Lemillion — Web Developer di Tasikmalaya. Pengalaman, sertifikasi, dan pencapaian selengkapnya.`,
+  description: `Kenali ${profile.value?.name ?? 'Miftah Pauzan Jamil'} — sering juga dicari dengan ejaan Miftah Fauzan Jamil — dikenal sebagai Lemillion, Web Developer di Tasikmalaya. Pengalaman, sertifikasi, dan pencapaian selengkapnya.`,
   ogTitle: `Tentang ${profile.value?.name ?? 'Miftah Pauzan Jamil'} (Lemillion)`,
 }))
 

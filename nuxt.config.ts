@@ -45,11 +45,11 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
           name: 'description',
-          content: 'Miftah Pauzan Jamil (Lemillion) — Web Developer di Tasikmalaya. Membangun website landing page, company profile, hingga sistem informasi sejak 2022.',
+          content: 'Miftah Pauzan Jamil (sering juga dieja Miftah Fauzan Jamil), dikenal sebagai Lemillion — Web Developer di Tasikmalaya. Membangun website landing page, company profile, hingga sistem informasi sejak 2022.',
         },
         {
           name: 'keywords',
-          content: 'Miftah Pauzan Jamil, Lemillion, Web Developer Tasikmalaya, Jasa Pembuatan Website Tasikmalaya, Full-stack Developer Indonesia',
+          content: 'Miftah Pauzan Jamil, Miftah Fauzan Jamil, Lemillion, Web Developer Tasikmalaya, Jasa Pembuatan Website Tasikmalaya, Full-stack Developer Indonesia',
         },
         { name: 'author', content: 'Miftah Pauzan Jamil' },
         { name: 'theme-color', content: '#0C0A07' },
@@ -61,7 +61,7 @@ export default defineNuxtConfig({
         { property: 'og:title', content: 'Miftah Pauzan Jamil (Lemillion) — Web Developer' },
         {
           property: 'og:description',
-          content: 'Portfolio resmi Miftah Pauzan Jamil (Lemillion), Web Developer di Tasikmalaya sejak 2022. Landing page, company profile, hingga sistem informasi.',
+          content: 'Portfolio resmi Miftah Pauzan Jamil (sering dieja Miftah Fauzan Jamil), dikenal sebagai Lemillion — Web Developer di Tasikmalaya sejak 2022. Landing page, company profile, hingga sistem informasi.',
         },
         // Twitter/X Card
         { name: 'twitter:card', content: 'summary_large_image' },
@@ -73,6 +73,17 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'sitemap', type: 'application/xml', href: '/sitemap.xml' },
+      ],
+      // Blocking inline script: menentukan SEBELUM frame pertama dicat apakah
+      // intro perlu ditampilkan (sesi baru) atau dilewati (sudah pernah lihat /
+      // reduce-motion). Ini mencegah "flash" konten beranda sebelum intro
+      // muncul — kelasnya ditambahkan ke <html> sebelum browser sempat render
+      // apa pun, jadi CSS di main.css bisa langsung sembunyikan overlay tanpa
+      // ada frame beranda yang sempat kelihatan.
+      script: [
+        {
+          innerHTML: `(function(){try{var s=sessionStorage.getItem('lm-intro-shown');var r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(s||r){document.documentElement.classList.add('lm-intro-skip');}}catch(e){}})();`,
+        },
       ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },
