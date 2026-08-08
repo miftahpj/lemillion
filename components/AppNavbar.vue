@@ -1,5 +1,5 @@
 <template>
-  <header :class="['fixed top-0 left-0 right-0 z-50 transition-all duration-500', scrolled ? 'py-3 bg-[#0C0A07]/98 border-b border-[#C9963A]/10' : 'py-6 bg-transparent']">
+  <header :class="['fixed top-0 left-0 right-0 z-50 transition-all duration-500', scrolled ? 'py-3 bg-[#0C0A07]/95 backdrop-blur-xl border-b border-[#C9963A]/10' : 'py-6 bg-transparent']">
     <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
       <NuxtLink to="/" class="group">
         <p class="font-display text-lg tracking-[0.35em] gold-text uppercase">Lemillion</p>
