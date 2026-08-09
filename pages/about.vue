@@ -7,7 +7,7 @@
         <img v-if="heroUrl" :src="heroUrl" alt="About hero"
           class="w-full h-full object-cover object-top opacity-35"
           loading="eager" fetchpriority="high" decoding="async"
-          @error="heroUrl = ''" />
+          @error="heroFailed = true" />
         <div class="absolute inset-0" style="background:radial-gradient(ellipse at 60% 40%,rgba(201,150,58,0.08) 0%,transparent 60%),linear-gradient(135deg,#0C0A07 0%,#1a1208 50%,#0C0A07 100%);" />
         <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A07] via-[#0C0A07]/40 to-transparent" />
       </div>
@@ -38,7 +38,7 @@
               <img v-if="avatarUrl" :src="avatarUrl" :alt="profile?.name"
                 class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                 loading="lazy" decoding="async"
-                @error="avatarUrl = ''" />
+                @error="avatarFailed = true" />
               <div class="absolute inset-0 flex items-center justify-center" :class="avatarUrl ? 'opacity-0' : ''">
                 <span class="font-display" style="font-size:9rem;color:rgba(201,150,58,0.07);">{{ profile?.name?.charAt(0) ?? 'M' }}</span>
               </div>
@@ -129,8 +129,13 @@
 <script setup lang="ts">
 const { profile, awards, fetchProfile, fetchAwards, getProfileImageUrl } = useSiteData()
 
-const avatarUrl = ref('')
-const heroUrl   = ref('')
+// SSR: data siap sebelum HTML pertama dikirim, tidak nunggu client mount.
+await Promise.all([fetchProfile(), fetchAwards()])
+
+const avatarFailed = ref(false)
+const heroFailed    = ref(false)
+const avatarUrl = computed(() => avatarFailed.value ? '' : getProfileImageUrl(profile.value?.avatar_url))
+const heroUrl   = computed(() => heroFailed.value ? '' : getProfileImageUrl(profile.value?.hero_image_url))
 
 const bioParagraphs = computed(() => {
   const bio = profile.value?.bio_extended ?? ''
@@ -155,10 +160,4 @@ useSeoMeta(() => ({
   description: `Kenali ${profile.value?.name ?? 'Miftah Pauzan Jamil'} — sering juga dicari dengan ejaan Miftah Fauzan Jamil — dikenal sebagai Lemillion, Web Developer di Tasikmalaya. Pengalaman, sertifikasi, dan pencapaian selengkapnya.`,
   ogTitle: `Tentang ${profile.value?.name ?? 'Miftah Pauzan Jamil'} (Lemillion)`,
 }))
-
-onMounted(async () => {
-  await Promise.all([fetchProfile(), fetchAwards()])
-  avatarUrl.value = getProfileImageUrl(profile.value?.avatar_url)
-  heroUrl.value   = getProfileImageUrl(profile.value?.hero_image_url)
-})
 </script>

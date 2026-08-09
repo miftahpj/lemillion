@@ -111,9 +111,10 @@
 const route = useRoute()
 const { fetchPortfolioItem, getImageUrl } = useSiteData()
 
-const item    = ref<any | null>(null)
-const related = ref<any[]>([])
-const loading = ref(true)
+const data: any = await fetchPortfolioItem(route.params.id as string)
+const item    = ref<any | null>(data?.item ?? null)
+const related = ref<any[]>(data?.related ?? [])
+const loading = ref(false)
 
 const metaFields = computed(() => {
   if (!item.value) return []
@@ -137,12 +138,4 @@ const getCategoryGradient = (slug: string) => {
 }
 
 useHead(() => ({ title: item.value ? `${item.value.title} — Lemillion` : 'Portfolio — Lemillion' }))
-
-onMounted(async () => {
-  loading.value = true
-  const data: any = await fetchPortfolioItem(route.params.id as string)
-  item.value    = data?.item ?? null
-  related.value = data?.related ?? []
-  loading.value = false
-})
 </script>

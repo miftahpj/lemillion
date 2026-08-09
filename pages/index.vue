@@ -13,7 +13,7 @@
           loading="eager"
           fetchpriority="high"
           decoding="async"
-          @error="heroImgUrl = ''"
+          @error="heroImgFailed = true"
         />
         <div class="absolute inset-0" style="background:radial-gradient(ellipse at 70% 30%,rgba(201,150,58,0.09) 0%,transparent 60%),radial-gradient(ellipse at 20% 70%,rgba(201,150,58,0.05) 0%,transparent 50%),linear-gradient(135deg,#0C0A07 0%,#1a1208 50%,#0C0A07 100%);" />
         <div class="absolute inset-0 bg-gradient-to-r from-[#0C0A07]/85 via-[#0C0A07]/30 to-transparent" />
@@ -170,7 +170,7 @@
                 :alt="profile?.name"
                 class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                 loading="lazy" decoding="async"
-                @error="profileAvatarUrl = ''"
+                @error="avatarImgFailed = true"
               />
               <div class="absolute inset-0 flex items-center justify-center" :class="profileAvatarUrl ? 'opacity-0' : ''">
                 <span class="font-display" style="font-size:8rem;color:rgba(201,150,58,0.07);">{{ profile?.name?.charAt(0) ?? 'M' }}</span>
@@ -338,15 +338,22 @@ useSeoMeta({
   ogDescription: 'Portfolio resmi Miftah Pauzan Jamil (kadang dieja Miftah Fauzan Jamil), dikenal sebagai Lemillion — Web Developer di Tasikmalaya sejak 2022.',
 })
 
-const { fetchAll, fetchFeaturedPortfolio, profile, servicesList, testimonials, loading, getImageUrl, getProfileImageUrl, formatPrice } = useSiteData()
+const { fetchAll, profile, portfolioList, servicesList, testimonials, loading, getImageUrl, getProfileImageUrl, formatPrice } = useSiteData()
 
 // NameCard cuma dibuat (mount) di layar besar, supaya HP/tablet tidak
 // menjalankan loop animasi drag-nya sama sekali (hemat CPU & baterai).
 const isDesktop = useMediaQuery('(min-width: 1024px)')
 
-const featuredPortfolio = ref<any[]>([])
-const heroImgUrl        = ref('')
-const profileAvatarUrl  = ref('')
+// Data (profile, portfolio unggulan, services, dst) di-fetch SSR lewat
+// fetchAll() di bawah — sudah SIAP begitu HTML pertama sampai ke browser,
+// tidak ada lagi jeda "kosong dulu baru keisi".
+await fetchAll()
+
+const heroImgFailed = ref(false)
+const avatarImgFailed = ref(false)
+const featuredPortfolio = computed(() => portfolioList.value)
+const heroImgUrl        = computed(() => heroImgFailed.value ? '' : getProfileImageUrl(profile.value?.hero_image_url))
+const profileAvatarUrl  = computed(() => avatarImgFailed.value ? '' : getProfileImageUrl(profile.value?.avatar_url))
 
 const heroNameWords = computed(() => {
   if (!profile.value?.name) return ['Miftah', 'Pauzan Jamil']
@@ -381,16 +388,6 @@ const getCategoryGradient = (slug: string) => {
 const tickerItems = computed(() => {
   const loc = profile.value?.location ?? 'Tasikmalaya'
   return ['Web Developer', 'Landing Page', 'Company Profile', 'Web App', 'Sistem Informasi', loc, 'Est. 2022']
-})
-
-onMounted(async () => {
-  await fetchAll()
-
-  heroImgUrl.value       = getProfileImageUrl(profile.value?.hero_image_url)
-  profileAvatarUrl.value = getProfileImageUrl(profile.value?.avatar_url)
-
-  const featured = await fetchFeaturedPortfolio(6)
-  featuredPortfolio.value = featured as any[]
 })
 </script>
 

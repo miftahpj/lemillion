@@ -90,6 +90,9 @@ const { fetchPortfolio, fetchCategories, portfolioList: items, categories, loadi
 
 const activeCategory = ref((route.query.category as string) ?? 'all')
 
+// SSR: kategori aktif dari query URL langsung di-fetch di server.
+await Promise.all([fetchCategories(), fetchPortfolio(activeCategory.value)])
+
 const selectCategory = async (slug: string) => {
   activeCategory.value = slug
   await navigateTo({ path: '/portfolio', query: slug === 'all' ? {} : { category: slug } })
@@ -106,8 +109,4 @@ const getCategoryGradient = (slug: string) => {
   }
   return (map[slug] ?? 'background:linear-gradient(135deg,#1a1208,#2a1e10,#1a1208);') + 'width:100%;height:100%;'
 }
-
-onMounted(async () => {
-  await Promise.all([fetchCategories(), fetchPortfolio(activeCategory.value)])
-})
 </script>

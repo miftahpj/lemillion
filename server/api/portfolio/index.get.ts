@@ -28,6 +28,9 @@ export default defineEventHandler(async (event) => {
     sql += ` LIMIT $${params.length}`
   }
 
-  const result = await db.query(sql, params)
-  return result.rows
+  const cacheKey = `portfolio:${categorySlug ?? 'all'}:${featuredOnly}:${limit ?? ''}`
+  return cachedQuery(cacheKey, 30_000, async () => {
+    const result = await db.query(sql, params)
+    return result.rows
+  })
 })

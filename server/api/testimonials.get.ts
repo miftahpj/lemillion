@@ -5,8 +5,11 @@ export default defineEventHandler(async (event) => {
   const conditions = ['is_published = true']
   if (featuredOnly) conditions.push('is_featured = true')
 
-  const result = await db.query(
-    `SELECT * FROM testimonials WHERE ${conditions.join(' AND ')} ORDER BY sort_order ASC`
-  )
-  return result.rows
+  const cacheKey = `testimonials:${featuredOnly ? 'featured' : 'all'}`
+  return cachedQuery(cacheKey, 60_000, async () => {
+    const result = await db.query(
+      `SELECT * FROM testimonials WHERE ${conditions.join(' AND ')} ORDER BY sort_order ASC`
+    )
+    return result.rows
+  })
 })

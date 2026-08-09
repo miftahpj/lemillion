@@ -16,47 +16,56 @@ export const useSiteData = () => {
   const error   = useState<string | null>('site_error', () => null)
 
   const fetchProfile = async () => {
+    if (profile.value) return profile.value
     try {
-      profile.value = await $fetch('/api/profile')
+      const { data } = await useAsyncData('bootstrap:profile', () => $fetch('/api/profile'))
+      profile.value = data.value
     } catch (e) { console.warn('[useSiteData] fetchProfile gagal', e) }
     return profile.value
   }
 
   const fetchPortfolio = async (categorySlug?: string) => {
     try {
-      const data = await $fetch('/api/portfolio', {
+      const key = `bootstrap:portfolio:${categorySlug ?? 'all'}`
+      const { data } = await useAsyncData(key, () => $fetch('/api/portfolio', {
         query: categorySlug && categorySlug !== 'all' ? { category: categorySlug } : {},
-      })
-      portfolioList.value = data as any[]
+      }))
+      portfolioList.value = (data.value as any[]) ?? []
     } catch (e) { console.warn('[useSiteData] fetchPortfolio gagal', e) }
     return portfolioList.value
   }
 
   const fetchFeaturedPortfolio = async (limit = 6) => {
     try {
-      return await $fetch('/api/portfolio', { query: { featured: 'true', limit } })
+      const { data } = await useAsyncData(`bootstrap:portfolio:featured:${limit}`, () =>
+        $fetch('/api/portfolio', { query: { featured: 'true', limit } }))
+      return data.value ?? []
     } catch (e) { console.warn('[useSiteData] fetchFeaturedPortfolio gagal', e); return [] }
   }
 
   const fetchPortfolioItem = async (id: string) => {
     try {
-      return await $fetch(`/api/portfolio/${id}`)
+      const { data } = await useAsyncData(`bootstrap:portfolio-item:${id}`, () => $fetch(`/api/portfolio/${id}`))
+      return data.value
     } catch (e) { return null }
   }
 
   const fetchServices = async () => {
     if (servicesList.value.length) return servicesList.value
     try {
-      servicesList.value = await $fetch('/api/services')
+      const { data } = await useAsyncData('bootstrap:services', () => $fetch('/api/services'))
+      servicesList.value = (data.value as any[]) ?? []
     } catch (e) { console.warn('[useSiteData] fetchServices gagal', e) }
     return servicesList.value
   }
 
   const fetchTestimonials = async (featuredOnly = false) => {
     try {
-      testimonials.value = await $fetch('/api/testimonials', {
+      const key = `bootstrap:testimonials:${featuredOnly}`
+      const { data } = await useAsyncData(key, () => $fetch('/api/testimonials', {
         query: featuredOnly ? { featured: 'true' } : {},
-      })
+      }))
+      testimonials.value = (data.value as any[]) ?? []
     } catch (e) { console.warn('[useSiteData] fetchTestimonials gagal', e) }
     return testimonials.value
   }
@@ -64,7 +73,8 @@ export const useSiteData = () => {
   const fetchAwards = async () => {
     if (awards.value.length) return awards.value
     try {
-      awards.value = await $fetch('/api/awards')
+      const { data } = await useAsyncData('bootstrap:awards', () => $fetch('/api/awards'))
+      awards.value = (data.value as any[]) ?? []
     } catch (e) { console.warn('[useSiteData] fetchAwards gagal', e) }
     return awards.value
   }
@@ -80,25 +90,43 @@ export const useSiteData = () => {
   const fetchCategories = async () => {
     if (categories.value.length) return categories.value
     try {
-      categories.value = await $fetch('/api/categories')
+      const { data } = await useAsyncData('bootstrap:categories', () => $fetch('/api/categories'))
+      categories.value = (data.value as any[]) ?? []
     } catch (e) { console.warn('[useSiteData] fetchCategories gagal', e) }
     return categories.value
   }
 
   // ─── FETCH ALL (homepage) ───
+  // Pakai useAsyncData supaya jalan di SERVER saat render pertama (SSR) —
+  // hasilnya langsung ikut di HTML yang dikirim ke browser, jadi tidak ada
+  // jeda "kosong dulu baru keisi" seperti kalau fetch di onMounted (client-only).
+  // Nuxt otomatis simpan hasilnya di payload, jadi saat hydrate di browser
+  // TIDAK fetch ulang (hemat 1 round-trip lagi).
   const fetchAll = async () => {
+    if (profile.value && servicesList.value.length) return
     loading.value = true
     error.value = null
     try {
-      const [, featured] = await Promise.all([
-        fetchProfile(),
-        fetchFeaturedPortfolio(6),
-        fetchServices(),
-        fetchTestimonials(true),
-        fetchAwards(),
-        fetchCategories(),
-      ])
-      if (Array.isArray(featured)) portfolioList.value = featured
+      const { data } = await useAsyncData('bootstrap:home', async () => {
+        const [profileData, featured, services, testimonialsData, awardsData, categoriesData] = await Promise.all([
+          $fetch('/api/profile'),
+          $fetch('/api/portfolio', { query: { featured: 'true', limit: 6 } }),
+          $fetch('/api/services'),
+          $fetch('/api/testimonials', { query: { featured: 'true' } }),
+          $fetch('/api/awards'),
+          $fetch('/api/categories'),
+        ])
+        return { profileData, featured, services, testimonialsData, awardsData, categoriesData }
+      })
+
+      if (data.value) {
+        profile.value      = data.value.profileData
+        portfolioList.value = Array.isArray(data.value.featured) ? data.value.featured : []
+        servicesList.value = data.value.services as any[]
+        testimonials.value = data.value.testimonialsData as any[]
+        awards.value        = data.value.awardsData as any[]
+        categories.value    = data.value.categoriesData as any[]
+      }
     } catch (e: any) {
       error.value = e?.message ?? 'Gagal memuat data'
       console.error('[useSiteData] fetchAll error:', e)

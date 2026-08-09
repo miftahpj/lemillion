@@ -22,5 +22,6 @@ export default defineEventHandler(async (event) => {
     values
   )
 
+  invalidateCache('profile')
   return result.rows[0] ?? null
 })

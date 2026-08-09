@@ -24,5 +24,6 @@ export default defineEventHandler(async (event) => {
     values
   )
 
+  invalidateCache('portfolio')
   return result.rows[0] ?? null
 })
