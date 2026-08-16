@@ -44,6 +44,7 @@
       <div v-else-if="items.length > 0" class="grid grid-cols-2 md:grid-cols-3 gap-4">
         <div
           v-for="(item, idx) in items" :key="item.id"
+          v-tilt
           data-aos="fade-up" :data-aos-delay="(idx % 6) * 60"
           class="group relative aspect-[4/5] overflow-hidden"
           style="background:#1a1208;"

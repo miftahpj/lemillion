@@ -4,12 +4,21 @@ export const useAuth = () => {
   const user    = useState<{ email: string } | null>('auth_user', () => null)
   const loading = useState<boolean>('auth_loading', () => false)
 
+  // fetchMe() dipakai middleware buat verifikasi sesi tiap pindah halaman admin.
+  // PENTING: hanya anggap "belum login" kalau server benar-benar bilang 401.
+  // Error lain (koneksi lambat, cold-start server, dsb) JANGAN menghapus sesi
+  // yang sedang berjalan — itu penyebab paling umum orang tiba-tiba
+  // "terlempar" ke /login padahal cookie-nya masih valid.
   const fetchMe = async () => {
     try {
       const { user: u } = await $fetch<{ user: { email: string } | null }>('/api/auth/me')
       user.value = u
-    } catch {
-      user.value = null
+    } catch (e: any) {
+      if (e?.statusCode === 401 || e?.response?.status === 401) {
+        user.value = null
+      }
+      // selain 401 (network error, timeout, dll) — biarkan state lama,
+      // jangan paksa logout gara-gara gangguan sesaat.
     }
     return user.value
   }

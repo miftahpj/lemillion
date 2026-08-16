@@ -79,17 +79,8 @@
       </div>
     </section>
 
-    <!-- ══ TICKER ══ -->
-    <div class="overflow-hidden py-4 border-y bg-[#0C0A07]" style="border-color:rgba(201,150,58,0.08);">
-      <div class="flex whitespace-nowrap" style="animation:ticker 25s linear infinite;">
-        <span v-for="n in 4" :key="n" class="flex items-center gap-8 pr-8 flex-shrink-0">
-          <span v-for="item in tickerItems" :key="item+n" class="inline-flex items-center gap-8">
-            <span class="font-mono text-[9px] tracking-[0.4em] uppercase" style="color:rgba(245,240,232,0.16);">{{ item }}</span>
-            <span style="color:rgba(201,150,58,0.22);" class="text-xs">✦</span>
-          </span>
-        </span>
-      </div>
-    </div>
+    <!-- ══ DIVIDER: Hero → Portfolio ══ -->
+    <SectionDivider :items="tickerItems" from="#0C0A07" to="#0C0A07" :speed="25" />
 
     <!-- ══ PORTFOLIO PREVIEW ══ -->
     <section class="py-32 bg-[#0C0A07] relative">
@@ -112,6 +103,7 @@
         <div v-else-if="featuredPortfolio.length > 0" class="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div
             v-for="(item, idx) in featuredPortfolio" :key="item.id"
+            v-tilt
             data-aos="fade-up" :data-aos-delay="(idx % 3) * 80"
             :class="idx === 0 || idx === 3 ? 'aspect-[3/4]' : 'aspect-[4/5]'"
             class="group relative overflow-hidden"
@@ -155,6 +147,9 @@
         </div>
       </div>
     </section>
+
+    <!-- ══ DIVIDER: Portfolio → About ══ -->
+    <SectionDivider :items="dividerItemsAbout" from="#0C0A07" to="#080604" />
 
     <!-- ══ ABOUT ══ -->
     <section class="py-32 bg-[#080604] relative">
@@ -214,6 +209,9 @@
       </div>
     </section>
 
+    <!-- ══ DIVIDER: About → Services ══ -->
+    <SectionDivider :items="dividerItemsServices" from="#080604" to="#0C0A07" flip />
+
     <!-- ══ SERVICES ══ -->
     <section class="py-32 bg-[#0C0A07] relative">
       <div class="max-w-7xl mx-auto px-8">
@@ -233,6 +231,7 @@
         <div v-else-if="servicesList.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-px border" style="background:rgba(201,150,58,0.08);border-color:rgba(201,150,58,0.10);">
           <div
             v-for="(svc, idx) in servicesList" :key="svc.id"
+            v-tilt
             class="group relative bg-[#0C0A07] p-10 hover:bg-[#0e0b07] transition-all duration-500 overflow-hidden"
             data-aos="fade-up" :data-aos-delay="idx * 100"
           >
@@ -261,6 +260,9 @@
         </div>
       </div>
     </section>
+
+    <!-- ══ DIVIDER: Services → Testimonials ══ -->
+    <SectionDivider :items="dividerItemsTestimonials" from="#0C0A07" to="#080604" />
 
     <!-- ══ TESTIMONIALS ══ -->
     <section class="py-32 bg-[#080604]">
@@ -304,6 +306,9 @@
         </div>
       </div>
     </section>
+
+    <!-- ══ DIVIDER: Testimonials → CTA ══ -->
+    <SectionDivider :items="dividerItemsCta" from="#080604" to="#0C0A07" flip />
 
     <!-- ══ CTA ══ -->
     <section class="relative py-36 overflow-hidden bg-[#0C0A07]">
@@ -389,6 +394,13 @@ const tickerItems = computed(() => {
   const loc = profile.value?.location ?? 'Tasikmalaya'
   return ['Web Developer', 'Landing Page', 'Company Profile', 'Web App', 'Sistem Informasi', loc, 'Est. 2022']
 })
+
+// Teks ticker untuk tiap divider antar-section — dibuat berbeda-beda
+// supaya tidak monoton, tapi tetap satu nafas dengan identitas Lemillion.
+const dividerItemsAbout        = ['Tentang Saya', 'Perjalanan Karir', 'Cerita Singkat', `${profile.value?.years_experience ?? 4}+ Tahun`, 'Dedikasi']
+const dividerItemsServices     = ['Layanan', 'Landing Page', 'Web App', 'Sistem Informasi', 'Konsultasi']
+const dividerItemsTestimonials = ['Kata Klien', 'Kepercayaan', 'Kolaborasi', 'Hasil Nyata', 'Testimoni']
+const dividerItemsCta          = ['Mari Berkarya', 'Diskusi Proyek', 'Terbuka Untuk Kolaborasi', 'Hubungi Saya']
 </script>
 
 <style>
