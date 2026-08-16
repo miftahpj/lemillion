@@ -21,7 +21,7 @@
           <ul class="space-y-3">
             <li class="font-body text-sm" style="color:rgba(245,240,232,0.35);">Tasikmalaya, Indonesia</li>
             <li><a href="mailto:miftahpauzanjamil@gmail.com" class="font-body text-sm hover:text-[#C9963A] transition-colors" style="color:rgba(245,240,232,0.35);">miftahpauzanjamil@gmail.com</a></li>
-            <li><a href="https://github.com/lemillion" target="_blank" rel="noopener" class="font-body text-sm hover:text-[#C9963A] transition-colors" style="color:rgba(245,240,232,0.35);">github.com/lemillion</a></li>
+            <li><a href="https://github.com/miftahpj" target="_blank" rel="noopener" class="font-body text-sm hover:text-[#C9963A] transition-colors" style="color:rgba(245,240,232,0.35);">github.com/miftahpj</a></li>
           </ul>
         </div>
       </div>

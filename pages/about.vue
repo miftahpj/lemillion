@@ -150,7 +150,7 @@ const profileStats = computed(() => [
 ])
 
 const socialLinks = computed(() => [
-  { label: `GitHub · ${profile.value?.github ?? 'lemillion'}`, url: profile.value?.github, href: `https://github.com/${profile.value?.github ?? 'lemillion'}` },
+  { label: `GitHub · ${profile.value?.github ?? 'miftahpj'}`, url: profile.value?.github, href: `https://github.com/${profile.value?.github ?? 'miftahpj'}` },
   { label: `LinkedIn`,                                          url: profile.value?.linkedin, href: `https://linkedin.com/in/${profile.value?.linkedin ?? ''}` },
   { label: `Website`,                                           url: profile.value?.website,  href: profile.value?.website ?? '#' },
 ])

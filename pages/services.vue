@@ -17,19 +17,20 @@
     <!-- Services -->
     <div class="max-w-7xl mx-auto px-8 pb-20">
 
-      <div v-if="loading" class="grid grid-cols-1 md:grid-cols-3 gap-px border" style="background:rgba(201,150,58,0.08);border-color:rgba(201,150,58,0.10);">
-        <div v-for="i in 3" :key="i" class="bg-[#0C0A07] p-10 h-80 animate-pulse" />
+      <div v-if="loading" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div v-for="i in 3" :key="i" class="bg-[#0C0A07] border p-10 h-80 animate-pulse" style="border-color:rgba(201,150,58,0.08);" />
       </div>
 
-      <div v-else-if="servicesList.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-px border" style="background:rgba(201,150,58,0.08);border-color:rgba(201,150,58,0.10);">
+      <div v-else-if="servicesList.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div
           v-for="(svc, idx) in servicesList" :key="svc.id"
-          class="group bg-[#0C0A07] p-10 hover:bg-[#0e0b07] transition-all duration-500 overflow-hidden relative"
+          class="group bg-[#0C0A07] border p-10 transition-all duration-500 hover:-translate-y-1 hover:border-[#C9963A]/25 overflow-hidden relative"
+          style="border-color:rgba(201,150,58,0.10);"
           data-aos="fade-up" :data-aos-delay="idx * 100"
         >
           <div class="h-px w-0 group-hover:w-full transition-all duration-700 mb-8" style="background:linear-gradient(to right,#C9963A,#E8C96A);" />
           <span class="font-mono text-[9px] tracking-[0.4em] mb-4 block" style="color:rgba(201,150,58,0.28);">{{ String(idx+1).padStart(2,'0') }}</span>
-          <div class="text-4xl mb-5 select-none">{{ svc.icon }}</div>
+          <ServiceIcon :icon="svc.icon" class="w-9 h-9 mb-5" style="color:#C9963A;" />
           <h3 class="font-display text-2xl tracking-wider mb-3 uppercase group-hover:text-[#E8C96A] transition-colors" style="color:rgba(245,240,232,0.72);">{{ svc.title }}</h3>
           <p class="font-body text-sm leading-relaxed mb-5" style="color:rgba(245,240,232,0.28);">{{ svc.description }}</p>
           <div class="flex items-end gap-2 mb-5">

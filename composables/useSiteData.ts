@@ -143,7 +143,24 @@ export const useSiteData = () => {
     if (path.startsWith('http') || path.startsWith('/')) return path
     return `/${path}`
   }
-  const getProfileImageUrl = getImageUrl
+
+  // Khusus foto profil (avatar/hero/signature): file-nya sering diganti
+  // lewat panel admin TAPI dengan nama file yang sama persis (mis. selalu
+  // "profile.webp"). Kalau URL tidak berubah, browser akan tetap pakai versi
+  // LAMA dari cache walau file di server sudah baru — makanya foto lama
+  // "nyangkut" terus meski di database sudah ter-update.
+  // Solusinya: tempelkan query `?v=<updated_at profil>` di belakang URL-nya.
+  // Setiap kali profil di-update (termasuk ganti foto), `updated_at` ikut
+  // berubah → URL-nya jadi "baru" di mata browser → foto lama otomatis
+  // di-fetch ulang, tanpa perlu selalu mem-bypass cache di kunjungan lain.
+  const getProfileImageUrl = (path: string | null | undefined): string => {
+    const url = getImageUrl(path)
+    if (!url) return url
+    const raw = profile.value?.updated_at
+    const version = raw ? new Date(raw).getTime() : null
+    if (!version) return url
+    return `${url}${url.includes('?') ? '&' : '?'}v=${version}`
+  }
 
   // ─── FORMAT PRICE ───
   const formatPrice = (n: number) =>

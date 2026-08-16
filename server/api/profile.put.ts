@@ -18,7 +18,11 @@ export default defineEventHandler(async (event) => {
   const values = entries.map(([, value]) => value)
 
   const result = await db.query(
-    `UPDATE profile SET ${setClauses.join(', ')} WHERE id = (SELECT id FROM profile LIMIT 1) RETURNING *`,
+    // "updated_at = NOW()" penting supaya nilainya berubah tiap kali profil
+    // (termasuk foto) di-update — dipakai sebagai cache-buster di frontend
+    // biar browser tidak nampilin foto lama dari cache saat foto diganti
+    // dengan nama file yang sama persis (mis. selalu "profile.webp").
+    `UPDATE profile SET ${setClauses.join(', ')}, updated_at = NOW() WHERE id = (SELECT id FROM profile LIMIT 1) RETURNING *`,
     values
   )
 
