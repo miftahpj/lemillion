@@ -54,11 +54,11 @@ const route = useRoute()
 watch(() => route.path, () => { open.value = false })
 
 const links = [
-  { to: '/',          label: 'Home' },
+  { to: '/',          label: 'Beranda' },
   { to: '/portfolio', label: 'Portfolio' },
-  { to: '/about',     label: 'About' },
-  { to: '/services',  label: 'Services' },
-  { to: '/contact',   label: 'Contact' },
+  { to: '/about',     label: 'Profil' },
+  { to: '/services',  label: 'Layanan' },
+  { to: '/contact',   label: 'Kontak' },
 ]
 </script>
 
@@ -83,19 +83,18 @@ const links = [
   box-shadow:
     0 12px 40px rgba(0,0,0,0.45),
     0 2px 8px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.18),
-    inset 0 -1px 0 rgba(0,0,0,0.25),
-    inset 0 0 24px rgba(201,150,58,0.05);
+    inset 0 1px 0 rgba(255,255,255,0.14),
+    inset 0 -1px 0 rgba(0,0,0,0.25);
 }
 
 .lm-glass-sheen {
   position: absolute;
   inset: -2px;
   pointer-events: none;
-  background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.10) 32%, rgba(201,150,58,0.14) 38%, transparent 52%);
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.05) 42%, transparent 55%);
   background-size: 220% 220%;
   background-position: 100% 0%;
-  animation: lm-sheen 9s ease-in-out infinite;
+  animation: lm-sheen 14s ease-in-out infinite;
   mix-blend-mode: screen;
 }
 

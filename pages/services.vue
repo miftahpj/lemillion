@@ -104,10 +104,10 @@
 
     <!-- CTA -->
     <section class="relative py-28 bg-[#080604]">
-      <div class="absolute inset-0" style="background:radial-gradient(ellipse at center,rgba(201,150,58,0.05) 0%,transparent 60%);" />
+
       <div class="relative z-10 max-w-3xl mx-auto px-8 text-center">
         <h2 class="font-display uppercase leading-none mb-8 gold-text" style="font-size:clamp(2.5rem,6vw,5rem);" data-aos="fade-up">Diskusikan Proyek</h2>
-        <NuxtLink to="/contact" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-10 py-4 transition-all hover:-translate-y-0.5" style="background:linear-gradient(135deg,#C9963A,#E8C96A,#C9963A);color:#1a1208;font-weight:700;" data-aos="fade-up" data-aos-delay="100">
+        <NuxtLink to="/contact" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-10 py-4 transition-all hover:-translate-y-0.5" style="background:#C9963A;color:#1a1208;font-weight:700;" data-aos="fade-up" data-aos-delay="100">
           Hubungi Sekarang
         </NuxtLink>
       </div>

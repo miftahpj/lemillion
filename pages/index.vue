@@ -15,7 +15,7 @@
           decoding="async"
           @error="heroImgFailed = true"
         />
-        <div class="absolute inset-0" style="background:radial-gradient(ellipse at 70% 30%,rgba(201,150,58,0.09) 0%,transparent 60%),radial-gradient(ellipse at 20% 70%,rgba(201,150,58,0.05) 0%,transparent 50%),linear-gradient(135deg,#0C0A07 0%,#1a1208 50%,#0C0A07 100%);" />
+        <div class="absolute inset-0" style="background:linear-gradient(135deg,#0C0A07 0%,#1a1208 50%,#0C0A07 100%);" />
         <div class="absolute inset-0 bg-gradient-to-r from-[#0C0A07]/85 via-[#0C0A07]/30 to-transparent" />
         <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A07]/80 via-transparent to-[#0C0A07]/20" />
       </div>
@@ -38,12 +38,12 @@
               <span
                 v-for="(word, i) in heroNameWords" :key="i"
                 :class="['block font-display uppercase leading-none tracking-wider', Number(i) === heroNameWords.length - 1 ? 'gold-text' : '']"
-                :style="`font-size:clamp(4rem,11vw,10rem);${Number(i) < heroNameWords.length - 1 ? 'color:rgba(245,240,232,0.92);' : ''}`"
+                :style="`font-size:clamp(3.2rem,9vw,8rem);${Number(i) < heroNameWords.length - 1 ? 'color:rgba(245,240,232,0.92);' : ''}`"
               >{{ word }}</span>
             </template>
             <template v-else>
-              <span class="block font-display uppercase leading-none tracking-wider" style="font-size:clamp(4rem,11vw,10rem);color:rgba(245,240,232,0.92);">Miftah</span>
-              <span class="block font-display uppercase leading-none tracking-wider gold-text" style="font-size:clamp(4rem,11vw,10rem);">Pauzan Jamil</span>
+              <span class="block font-display uppercase leading-none tracking-wider" style="font-size:clamp(3.2rem,9vw,8rem);color:rgba(245,240,232,0.92);">Miftah</span>
+              <span class="block font-display uppercase leading-none tracking-wider gold-text" style="font-size:clamp(3.2rem,9vw,8rem);">Pauzan Jamil</span>
             </template>
           </h1>
 
@@ -52,7 +52,7 @@
           </p>
 
           <div class="flex flex-wrap items-center gap-5" data-aos="fade-up" data-aos-delay="300">
-            <NuxtLink to="/portfolio" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-10 py-4 transition-all duration-300 hover:-translate-y-0.5" style="background:linear-gradient(135deg,#C9963A,#E8C96A,#C9963A);color:#1a1208;font-weight:700;">
+            <NuxtLink to="/portfolio" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-10 py-4 transition-all duration-300 hover:-translate-y-0.5" style="background:#C9963A;color:#1a1208;font-weight:700;">
               Lihat Portfolio
             </NuxtLink>
             <NuxtLink to="/contact" class="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.3em] uppercase px-10 py-4 border transition-all duration-300 hover:bg-[#C9963A]/8" style="border-color:rgba(201,150,58,0.35);color:#C9963A;">
@@ -84,13 +84,13 @@
 
     <!-- ══ PORTFOLIO PREVIEW ══ -->
     <section class="py-32 bg-[#0C0A07] relative">
-      <div class="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-80 h-80 rounded-full pointer-events-none" style="background:rgba(201,150,58,0.04);filter:blur(100px);" />
+      <div class="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-80 h-80 rounded-full pointer-events-none" style="background:rgba(201,150,58,0.025);filter:blur(90px);" />
       <div class="max-w-7xl mx-auto px-8">
 
         <div class="mb-14">
           <div class="flex items-center gap-4 mb-4" data-aos="fade-up">
             <div class="h-px w-10" style="background:linear-gradient(to right,#C9963A,transparent);" />
-            <span class="font-mono text-[10px] tracking-[0.4em] uppercase" style="color:rgba(201,150,58,0.55);">Selected Work</span>
+            <span class="font-mono text-[10px] tracking-[0.4em] uppercase" style="color:rgba(201,150,58,0.55);">Project Saya</span>
           </div>
           <h2 class="font-display uppercase leading-none mb-3 gold-text" style="font-size:clamp(3rem,7vw,6rem);" data-aos="fade-up" data-aos-delay="100">Portfolio</h2>
           <p class="font-serif text-xl italic max-w-lg" style="color:rgba(245,240,232,0.38);" data-aos="fade-up" data-aos-delay="150">Beberapa proyek pilihan dari perjalanan sebagai web developer.</p>
@@ -153,7 +153,7 @@
 
     <!-- ══ ABOUT ══ -->
     <section class="py-32 bg-[#080604] relative">
-      <div class="hidden md:block absolute right-0 top-1/4 w-96 h-96 rounded-full pointer-events-none" style="background:rgba(201,150,58,0.04);filter:blur(130px);" />
+      <div class="hidden md:block absolute right-0 top-1/4 w-96 h-96 rounded-full pointer-events-none" style="background:rgba(201,150,58,0.025);filter:blur(110px);" />
       <div class="max-w-7xl mx-auto px-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div class="relative" data-aos="fade-right">
@@ -201,7 +201,7 @@
               </div>
             </div>
 
-            <NuxtLink to="/about" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-8 py-3.5 transition-all duration-300 hover:-translate-y-0.5" style="background:linear-gradient(135deg,#C9963A,#E8C96A,#C9963A);color:#1a1208;font-weight:700;" data-aos="fade-up" data-aos-delay="300">
+            <NuxtLink to="/about" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-8 py-3.5 transition-all duration-300 hover:-translate-y-0.5" style="background:#C9963A;color:#1a1208;font-weight:700;" data-aos="fade-up" data-aos-delay="300">
               Baca Selengkapnya
             </NuxtLink>
           </div>
@@ -218,7 +218,7 @@
         <div class="text-center mb-14">
           <div class="flex items-center justify-center gap-4 mb-4" data-aos="fade-up">
             <div class="h-px w-10" style="background:linear-gradient(to right,transparent,#C9963A);" />
-            <span class="font-mono text-[10px] tracking-[0.4em] uppercase" style="color:rgba(201,150,58,0.55);">What I Offer</span>
+            <span class="font-mono text-[10px] tracking-[0.4em] uppercase" style="color:rgba(201,150,58,0.55);">Layanan yang Tersedia</span>
             <div class="h-px w-10" style="background:linear-gradient(to left,transparent,#C9963A);" />
           </div>
           <h2 class="font-display uppercase leading-none gold-text" style="font-size:clamp(3rem,7vw,6rem);" data-aos="fade-up" data-aos-delay="100">Services</h2>
@@ -270,7 +270,7 @@
         <div class="text-center mb-14">
           <div class="flex items-center justify-center gap-4 mb-4" data-aos="fade-up">
             <div class="h-px w-10" style="background:linear-gradient(to right,transparent,#C9963A);" />
-            <span class="font-mono text-[10px] tracking-[0.4em] uppercase" style="color:rgba(201,150,58,0.55);">Client Words</span>
+            <span class="font-mono text-[10px] tracking-[0.4em] uppercase" style="color:rgba(201,150,58,0.55);">Feedback</span>
             <div class="h-px w-10" style="background:linear-gradient(to left,transparent,#C9963A);" />
           </div>
           <h2 class="font-display uppercase leading-none gold-text" style="font-size:clamp(3rem,7vw,6rem);" data-aos="fade-up" data-aos-delay="100">Testimonials</h2>
@@ -312,19 +312,18 @@
 
     <!-- ══ CTA ══ -->
     <section class="relative py-36 overflow-hidden bg-[#0C0A07]">
-      <div class="absolute inset-0" style="background:radial-gradient(ellipse at center,rgba(201,150,58,0.06) 0%,transparent 60%);" />
       <div class="relative z-10 max-w-4xl mx-auto px-8 text-center">
         <div class="flex items-center justify-center gap-4 mb-10" data-aos="fade-down">
           <div class="h-px w-20" style="background:linear-gradient(to right,transparent,rgba(201,150,58,0.35));" />
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0L10 5.5H16L11 9L13 16L8 12.5L3 16L5 9L0 5.5H6L8 0Z" fill="#C9963A" fill-opacity="0.35"/></svg>
           <div class="h-px w-20" style="background:linear-gradient(to left,transparent,rgba(201,150,58,0.35));" />
         </div>
-        <h2 class="font-display uppercase leading-none mb-7 gold-text" style="font-size:clamp(3rem,8vw,7rem);" data-aos="fade-up" data-aos-delay="100">Let's Build<br/>Something</h2>
+        <h2 class="font-display uppercase leading-none mb-7 gold-text" style="font-size:clamp(2.6rem,6.5vw,5.5rem);" data-aos="fade-up" data-aos-delay="100">Ayo Membangun<br/>Website Bersama Saya</h2>
         <p class="font-serif text-xl italic leading-relaxed mb-12 max-w-xl mx-auto" style="color:rgba(245,240,232,0.32);" data-aos="fade-up" data-aos-delay="200">
           Ceritakan kebutuhan website atau sistem kamu. Mari kita rancang bersama.
         </p>
         <div class="flex flex-wrap items-center justify-center gap-5" data-aos="fade-up" data-aos-delay="300">
-          <NuxtLink to="/contact" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-12 py-5 transition-all duration-300 hover:-translate-y-0.5" style="background:linear-gradient(135deg,#C9963A,#E8C96A,#C9963A);color:#1a1208;font-weight:700;">Diskusikan Proyek</NuxtLink>
+          <NuxtLink to="/contact" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-12 py-5 transition-all duration-300 hover:-translate-y-0.5" style="background:#C9963A;color:#1a1208;font-weight:700;">Diskusikan Proyek</NuxtLink>
           <a :href="`mailto:${profile?.email ?? 'miftahpauzanjamil@gmail.com'}`" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-12 py-5 border transition-all duration-300" style="border-color:rgba(201,150,58,0.32);color:#C9963A;">
             {{ profile?.email ?? 'miftahpauzanjamil@gmail.com' }}
           </a>

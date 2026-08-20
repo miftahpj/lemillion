@@ -39,17 +39,14 @@ body {
 .font-display { font-family: 'Cinzel', serif !important; }
 .font-mono-custom { font-family: 'Space Mono', monospace !important; }
 
-/* Gold gradient text */
+/* Gold text (gradient statis, tanpa shimmer supaya tidak terasa "AI-generated") */
 .gold-text {
-  background: linear-gradient(135deg, #A87B2C, #E8C96A, #C9963A, #F0D98A, #C9963A);
-  background-size: 200% auto;
+  background: linear-gradient(135deg, #C9963A, #E8C96A);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 6s linear infinite;
 }
 @media (prefers-reduced-motion: reduce) {
-  .gold-text { animation: none; }
   * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
 }
 

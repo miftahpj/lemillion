@@ -8,7 +8,7 @@
           class="w-full h-full object-cover object-top opacity-35"
           loading="eager" fetchpriority="high" decoding="async"
           @error="heroFailed = true" />
-        <div class="absolute inset-0" style="background:radial-gradient(ellipse at 60% 40%,rgba(201,150,58,0.08) 0%,transparent 60%),linear-gradient(135deg,#0C0A07 0%,#1a1208 50%,#0C0A07 100%);" />
+        <div class="absolute inset-0" style="background:linear-gradient(135deg,#0C0A07 0%,#1a1208 50%,#0C0A07 100%);" />
         <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A07] via-[#0C0A07]/40 to-transparent" />
       </div>
       <div class="relative z-10 max-w-7xl mx-auto px-8 pb-20 pt-36 w-full">
@@ -114,11 +114,11 @@
 
     <!-- CTA -->
     <section class="relative py-28 bg-[#080604]">
-      <div class="absolute inset-0" style="background:radial-gradient(ellipse at center,rgba(201,150,58,0.05) 0%,transparent 60%);" />
+
       <div class="relative z-10 max-w-3xl mx-auto px-8 text-center">
         <h2 class="font-display uppercase leading-none mb-8 gold-text" style="font-size:clamp(2.5rem,6vw,5rem);" data-aos="fade-up">Let's Build<br/>Together</h2>
         <div class="flex flex-wrap justify-center gap-5" data-aos="fade-up" data-aos-delay="100">
-          <NuxtLink to="/contact" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-10 py-4 transition-all hover:-translate-y-0.5" style="background:linear-gradient(135deg,#C9963A,#E8C96A,#C9963A);color:#1a1208;font-weight:700;">Diskusikan Proyek</NuxtLink>
+          <NuxtLink to="/contact" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-10 py-4 transition-all hover:-translate-y-0.5" style="background:#C9963A;color:#1a1208;font-weight:700;">Diskusikan Proyek</NuxtLink>
           <NuxtLink to="/portfolio" class="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.3em] uppercase px-10 py-4 border transition-all" style="border-color:rgba(201,150,58,0.32);color:#C9963A;">Lihat Portfolio →</NuxtLink>
         </div>
       </div>

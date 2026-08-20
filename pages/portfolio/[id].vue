@@ -45,7 +45,7 @@
             <div v-if="item.repo_url || item.demo_url" class="space-y-3 pt-4">
               <a v-if="item.demo_url" :href="item.demo_url" target="_blank" rel="noopener"
                 class="flex items-center justify-center gap-2 font-mono text-[10px] tracking-[0.3em] uppercase px-6 py-3.5 w-full transition-all hover:-translate-y-0.5"
-                style="background:linear-gradient(135deg,#C9963A,#E8C96A,#C9963A);color:#1a1208;font-weight:700;">
+                style="background:#C9963A;color:#1a1208;font-weight:700;">
                 Live Demo ↗
               </a>
               <a v-if="item.repo_url" :href="item.repo_url" target="_blank" rel="noopener"
@@ -98,7 +98,7 @@
       <section class="relative py-24 bg-[#0C0A07]">
         <div class="relative z-10 max-w-2xl mx-auto px-8 text-center">
           <h2 class="font-display uppercase leading-none mb-8 gold-text" style="font-size:clamp(2.2rem,5vw,4rem);">Punya Proyek Serupa?</h2>
-          <NuxtLink to="/contact" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-10 py-4 transition-all hover:-translate-y-0.5" style="background:linear-gradient(135deg,#C9963A,#E8C96A,#C9963A);color:#1a1208;font-weight:700;">
+          <NuxtLink to="/contact" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-10 py-4 transition-all hover:-translate-y-0.5" style="background:#C9963A;color:#1a1208;font-weight:700;">
             Diskusikan Proyek
           </NuxtLink>
         </div>

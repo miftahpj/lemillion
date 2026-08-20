@@ -154,7 +154,7 @@
                 type="submit"
                 :disabled="submitting"
                 class="inline-flex items-center gap-3 font-mono text-[11px] tracking-[0.3em] uppercase px-10 py-4 transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50"
-                style="background:linear-gradient(135deg,#C9963A,#E8C96A,#C9963A);color:#1a1208;font-weight:700;"
+                style="background:#C9963A;color:#1a1208;font-weight:700;"
               >
                 <svg v-if="submitting" class="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
                   <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" stroke-dasharray="32" stroke-dashoffset="12" stroke-linecap="round"/>
