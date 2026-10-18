@@ -149,3 +149,64 @@ body {
 .intro-arc{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#D9141B}.intro-arc h1{font-size:clamp(64px,14vw,160px);margin:0}.intro-arc .lbl{color:#F4F7F9}
 .intro-arc .bar{width:min(320px,70vw);height:12px;border:2px solid #F4F7F9;padding:2px}.intro-arc .bar i{display:block;height:100%;background:#F4F7F9}
 @media(max-width:800px){.arc-nav nav{display:none}.boss,.arc-foot{grid-template-columns:1fr}.levels{flex-direction:column;align-items:stretch}.card{aspect-ratio:16/8}.loot{grid-template-columns:1fr 1fr}.atk{height:260px}.combo{top:6vh}}
+
+/* ═════ HITSTOP v2: efek & seksi dari video ═════ */
+:root{--disp:'Big Shoulders Display',Impact,'Arial Narrow',sans-serif;--mono:'Share Tech Mono',ui-monospace,monospace}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{border-top:4px solid #D9141B}
+:where(h1,h2,h3){font-family:var(--disp);text-transform:uppercase}
+:where(input,select,textarea){font-family:var(--mono)}
+table th{font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em}
+.keys{color:#F5C518}
+.spark{position:fixed;inset:0;width:100%;height:100%;z-index:44;pointer-events:none}
+.arc section::after{content:"◇";position:absolute;left:50%;bottom:10px;translate:-50% 0;font-size:14px;opacity:.7}
+.hero{padding-top:14vh}
+.art{position:absolute;right:6vw;bottom:8vh;width:min(36vw,440px);aspect-ratio:200/260}
+.art svg{position:absolute;inset:0;width:100%;height:100%;fill:#F4F7F9;opacity:.92}
+.art img{position:absolute;left:10%;top:8%;width:80%;height:88%;object-fit:cover;object-position:top;border:3px solid #14151A;box-shadow:10px 10px 0 #9C0B11}
+.about{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:4vw;margin-top:6vh}
+.portrait{position:relative;aspect-ratio:4/5;border:3px solid #F4F7F9;background:#262830;box-shadow:10px 10px 0 #D9141B}.portrait img{width:100%;height:100%;object-fit:cover}
+.portrait .lbl{position:absolute;left:0;bottom:0;background:#D9141B;padding:6px 10px}
+.bio p{margin-bottom:14px;max-width:64ch}.bio .lead{font-size:1.3em;font-weight:600;line-height:1.3}.sign{height:64px;margin:6px 0 18px}
+.stats.big{margin:22px 0}.bio .row{display:flex;gap:12px;flex-wrap:wrap}
+.ach-t{margin:9vh 0 18px;color:#F5C518}.ach,.loot{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2vw}
+.ach .it{opacity:1;transform:none}.it p{font-size:15px;opacity:.9;margin:10px 0}.it ul{margin:0 0 12px 18px;font-size:15px}
+.it .btn{border-color:var(--c);color:var(--c);justify-self:start}.it .btn:hover{background:var(--c);color:#14151A}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.chip{font:13px var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;border:2px solid #fff6;background:none;color:#F4F7F9;cursor:pointer}.chip.on{background:#F4F7F9;color:#14151A}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:2vw;margin-top:5vh}.card{aspect-ratio:1/.8}
+.story{max-width:46ch}.meta{display:flex;flex-wrap:wrap;gap:6px 28px;margin:20px 0}.meta dd{font-weight:600}
+.gal{display:flex;gap:10px;overflow-x:auto;margin-top:32px}.gal img{height:150px;border:2px solid #fff9}
+.recap{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.recap .lbl{border:2px solid #fff9;padding:8px 12px}
+.revs{display:flex;gap:2vw;overflow-x:auto;scroll-snap-type:x mandatory;padding:6vh 0}
+.rev{flex:0 0 min(420px,82vw);scroll-snap-align:start;border:2px solid #F5C518;padding:22px;background:#0008}.rev .star{color:#F5C518}.rev p{margin:14px 0}
+.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:6vh}
+.slot{--c:#2fe36d;display:flex;flex-direction:column;gap:6px;padding:16px;text-align:left;color:#F4F7F9;background:#0008;border:2px solid var(--c);cursor:pointer}
+.slot.limited{--c:#F5C518}.slot.full{--c:#D9141B;opacity:.55;cursor:not-allowed}.slot b{font:900 32px var(--disp);color:var(--c);text-transform:uppercase}
+.frm{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:min(900px,100%);margin-top:30px;text-align:left}
+.frm textarea,.frm button,.frm p,.frm .wide{grid-column:1/-1}
+.frm input,.frm select,.frm textarea{font-size:15px;color:#F4F7F9;background:#0006;border:2px solid #F4F7F9;padding:13px;border-radius:0;width:100%}
+.frm ::placeholder{color:#F4F7F9aa}.frm select option{color:#14151A}.frm p.ok{color:#F5C518}
+.contact{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;margin-top:24px}.contact a{color:#F4F7F9}
+.login{min-height:100vh;display:grid;place-items:center;padding:5vw;background:radial-gradient(circle at 70% 40%,#f02a2a,#D9141B 55%,#9C0B11)}
+.frm.one{grid-template-columns:1fr;width:min(420px,100%)}.frm.one h1{font-size:72px;line-height:.9}.pw{display:flex;gap:8px}.err{color:#F5C518}
+/* glitch saat berpindah seksi */
+.gl-on .gl{animation:glt .6s steps(2) 1}
+@keyframes glt{0%{text-shadow:-6px 0 #2fd4ff,6px 0 #ff3d6e;transform:translateX(-4px) skewX(-6deg)}30%{clip-path:inset(0 0 55% 0);transform:translateX(6px)}60%{clip-path:inset(40% 0 0 0);text-shadow:5px 0 #2fd4ff,-5px 0 #ff3d6e}100%{text-shadow:none;transform:none;clip-path:none}}
+/* pecahan merah transisi */
+.shards{position:fixed;inset:0;z-index:45;pointer-events:none;overflow:hidden}
+.shards i{position:absolute;top:calc(var(--k)*15% - 8%);left:-40%;width:60%;height:9%;background:#D9141B;opacity:0}
+.shards.go i{animation:shd .6s calc(var(--k)*.04s) both}
+@keyframes shd{0%{opacity:1;transform:translateX(0) skewX(-30deg)}100%{opacity:0;transform:translateX(260%) skewX(-30deg)}}
+/* flash K.O. + guncangan */
+.koflash{position:fixed;inset:0;z-index:70;display:grid;place-items:center;font:900 clamp(140px,34vw,460px) var(--disp);color:#F4F7F9;text-shadow:8px 8px 0 #9C0B11;background:#D9141B66;opacity:0;pointer-events:none}
+.koflash.on{animation:kof 1.3s both}@keyframes kof{0%{opacity:0;transform:scale(1.5)}12%{opacity:1;transform:scale(1)}80%{opacity:1}100%{opacity:0}}
+.shake section{animation:shk .25s 4}@keyframes shk{25%{transform:translate(-8px,4px)}75%{transform:translate(8px,-4px)}}
+/* kotak loot + sinar warna */
+.box{position:relative;cursor:pointer}.box>span{position:relative;z-index:1}
+.beam{position:absolute;bottom:100%;left:calc(var(--k)*20% - 8%);width:16px;height:0;opacity:0;background:#F5C518;transition:height .5s calc(var(--k)*.08s),opacity .3s}
+.beam:nth-of-type(2){background:#b56cff}.beam:nth-of-type(3){background:#3fa9ff}.beam:nth-of-type(4){background:#2fe36d}
+.box.open .beam{height:min(36vh,300px);opacity:.9}
+.dmg{position:absolute;top:22vh;font:900 40px var(--disp);animation:up .9s forwards;pointer-events:none}@keyframes up{to{transform:translateY(-50px);opacity:0}}
+@media(max-width:800px){.about,.frm{grid-template-columns:1fr}.levels{grid-template-columns:1fr}.art{opacity:.3;width:70vw}.keys{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}

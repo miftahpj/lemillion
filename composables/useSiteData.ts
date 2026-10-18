@@ -103,29 +103,32 @@ export const useSiteData = () => {
   // Nuxt otomatis simpan hasilnya di payload, jadi saat hydrate di browser
   // TIDAK fetch ulang (hemat 1 round-trip lagi).
   const fetchAll = async () => {
-    if (profile.value && servicesList.value.length) return
+    // Tanpa pintasan "if (profile && services) return": dulu itu membuat testimoni, penghargaan,
+    // kategori & ketersediaan tidak pernah dimuat bila profil sudah ada dari halaman lain.
     loading.value = true
     error.value = null
     try {
       const { data } = await useAsyncData('bootstrap:home', async () => {
-        const [profileData, featured, services, testimonialsData, awardsData, categoriesData] = await Promise.all([
+        const [profileData, works, services, testimonialsData, awardsData, categoriesData, availabilityData] = await Promise.all([
           $fetch('/api/profile'),
-          $fetch('/api/portfolio', { query: { featured: 'true', limit: 6 } }),
+          $fetch('/api/portfolio'),
           $fetch('/api/services'),
-          $fetch('/api/testimonials', { query: { featured: 'true' } }),
+          $fetch('/api/testimonials'),
           $fetch('/api/awards'),
           $fetch('/api/categories'),
+          $fetch('/api/availability'),
         ])
-        return { profileData, featured, services, testimonialsData, awardsData, categoriesData }
+        return { profileData, works, services, testimonialsData, awardsData, categoriesData, availabilityData }
       })
 
       if (data.value) {
-        profile.value      = data.value.profileData
-        portfolioList.value = Array.isArray(data.value.featured) ? data.value.featured : []
-        servicesList.value = data.value.services as any[]
-        testimonials.value = data.value.testimonialsData as any[]
-        awards.value        = data.value.awardsData as any[]
-        categories.value    = data.value.categoriesData as any[]
+        profile.value       = data.value.profileData
+        portfolioList.value = Array.isArray(data.value.works) ? data.value.works : []
+        servicesList.value  = (data.value.services as any[]) ?? []
+        testimonials.value  = (data.value.testimonialsData as any[]) ?? []
+        awards.value        = (data.value.awardsData as any[]) ?? []
+        categories.value    = (data.value.categoriesData as any[]) ?? []
+        availability.value  = (data.value.availabilityData as any[]) ?? []
       }
     } catch (e: any) {
       error.value = e?.message ?? 'Gagal memuat data'
