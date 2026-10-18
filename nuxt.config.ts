@@ -23,9 +23,9 @@ export default defineNuxtConfig({
   // demi ukuran halaman & waktu render yang ringan di semua device.
   googleFonts: {
     families: {
-      'Cinzel': [500, 700],
-      'DM Sans': [400, 500],
-      'Space Mono': [400, 700],
+      'Big Shoulders Display': [800, 900],
+      'Barlow': [400, 600],
+      'Share Tech Mono': [400],
     },
     display: 'swap',
     preload: false,
@@ -52,7 +52,7 @@ export default defineNuxtConfig({
           content: 'Miftah Pauzan Jamil, Miftah Fauzan Jamil, Lemillion, Web Developer Tasikmalaya, Jasa Pembuatan Website Tasikmalaya, Full-stack Developer Indonesia',
         },
         { name: 'author', content: 'Miftah Pauzan Jamil' },
-        { name: 'theme-color', content: '#0C0A07' },
+        { name: 'theme-color', content: '#14151A' },
         { name: 'robots', content: 'index, follow' },
         // Open Graph — dipakai saat link di-share di WhatsApp/Facebook/LinkedIn
         { property: 'og:site_name', content: 'Miftah Pauzan Jamil — Lemillion' },

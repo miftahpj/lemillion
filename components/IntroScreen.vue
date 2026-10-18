@@ -3,12 +3,12 @@
     <div
       v-if="visible"
       id="lm-intro-overlay"
-      class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0C0A07] overflow-hidden"
+      class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#14151A] overflow-hidden"
     >
       <!-- background wash, consistent dengan hero -->
-      <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 40%,rgba(201,150,58,0.10) 0%,transparent 60%),linear-gradient(135deg,#0C0A07 0%,#1a1208 50%,#0C0A07 100%);" />
+      <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 40%,rgba(255,59,59,0.10) 0%,transparent 60%),linear-gradient(135deg,#14151A 0%,#1D1F27 50%,#14151A 100%);" />
       <div class="absolute inset-0 pointer-events-none">
-        <div v-for="i in 5" :key="i" class="absolute top-0 bottom-0 w-px" :style="`left:${i*20}%;background:rgba(201,150,58,0.03);`" />
+        <div v-for="i in 5" :key="i" class="absolute top-0 bottom-0 w-px" :style="`left:${i*20}%;background:rgba(255,59,59,0.03);`" />
       </div>
 
       <div class="relative z-10 flex flex-col items-center px-6 text-center">
@@ -16,12 +16,12 @@
         <div class="intro-item flex items-center gap-4 mb-10" :class="{ 'intro-in': stage >= 1 }">
           <div v-for="(icon, i) in icons" :key="i"
             class="w-11 h-11 rounded-full border flex items-center justify-center"
-            style="background:rgba(201,150,58,0.06);border-color:rgba(201,150,58,0.25);color:#C9963A;">
+            style="background:rgba(255,59,59,0.06);border-color:rgba(255,59,59,0.25);color:#FF3B3B;">
             <component :is="icon" />
           </div>
         </div>
 
-        <p class="intro-item font-mono text-[10px] tracking-[0.5em] uppercase mb-4" style="color:rgba(201,150,58,0.55);" :class="{ 'intro-in': stage >= 1 }">
+        <p class="intro-item font-mono text-[10px] tracking-[0.5em] uppercase mb-4" style="color:rgba(255,59,59,0.55);" :class="{ 'intro-in': stage >= 1 }">
           Selamat Datang
         </p>
         <h1 class="intro-item font-display uppercase leading-none gold-text mb-6" style="font-size:clamp(2rem,6vw,3.75rem);" :class="{ 'intro-in': stage >= 1 }">
@@ -29,15 +29,15 @@
         </h1>
 
         <div class="intro-item font-mono text-[10px] tracking-[0.3em] uppercase px-5 py-2 border rounded-full mb-14"
-          style="color:rgba(245,240,232,0.4);border-color:rgba(201,150,58,0.2);" :class="{ 'intro-in': stage >= 1 }">
+          style="color:rgba(244,247,249,0.4);border-color:rgba(255,59,59,0.2);" :class="{ 'intro-in': stage >= 1 }">
           {{ siteLabel }}
         </div>
 
         <!-- progress -->
-        <div class="intro-item w-56 h-px relative overflow-hidden" style="background:rgba(245,240,232,0.08);" :class="{ 'intro-in': stage >= 1 }">
-          <div class="absolute inset-y-0 left-0" :style="`width:${progress}%;background:linear-gradient(to right,#A87B2C,#E8C96A,#C9963A);transition:width 0.15s linear;`" />
+        <div class="intro-item w-56 h-px relative overflow-hidden" style="background:rgba(244,247,249,0.08);" :class="{ 'intro-in': stage >= 1 }">
+          <div class="absolute inset-y-0 left-0" :style="`width:${progress}%;background:linear-gradient(to right,#D9141B,#F5C518,#FF3B3B);transition:width 0.15s linear;`" />
         </div>
-        <span class="intro-item font-mono text-[9px] tracking-[0.3em] mt-3" style="color:rgba(245,240,232,0.22);" :class="{ 'intro-in': stage >= 1 }">
+        <span class="intro-item font-mono text-[9px] tracking-[0.3em] mt-3" style="color:rgba(244,247,249,0.22);" :class="{ 'intro-in': stage >= 1 }">
           {{ Math.round(progress) }}%
         </span>
       </div>

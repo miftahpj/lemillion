@@ -17,9 +17,9 @@
       <path :d="curvePath" fill="none" :stroke="`url(#lm-divider-grad-${uid})`" stroke-width="1.4" opacity="0.7" />
       <defs>
         <linearGradient :id="`lm-divider-grad-${uid}`" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#C9963A" stop-opacity="0" />
-          <stop offset="50%" stop-color="#E8C96A" stop-opacity="0.9" />
-          <stop offset="100%" stop-color="#C9963A" stop-opacity="0" />
+          <stop offset="0%" stop-color="#FF3B3B" stop-opacity="0" />
+          <stop offset="50%" stop-color="#F5C518" stop-opacity="0.9" />
+          <stop offset="100%" stop-color="#FF3B3B" stop-opacity="0" />
         </linearGradient>
       </defs>
     </svg>
@@ -27,17 +27,17 @@
     <!-- Ornamen berlian tengah -->
     <div class="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style="top:0;">
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-        <path d="M8 0L10 5.5H16L11 9L13 16L8 12.5L3 16L5 9L0 5.5H6L8 0Z" fill="#C9963A" fill-opacity="0.55" />
+        <path d="M8 0L10 5.5H16L11 9L13 16L8 12.5L3 16L5 9L0 5.5H6L8 0Z" fill="#FF3B3B" fill-opacity="0.55" />
       </svg>
     </div>
 
     <!-- Ticker berjalan -->
-    <div class="overflow-hidden py-3.5 border-y" :style="`border-color:rgba(201,150,58,0.08);background:${to};`">
+    <div class="overflow-hidden py-3.5 border-y" :style="`border-color:rgba(255,59,59,0.08);background:${to};`">
       <div class="flex whitespace-nowrap" :style="`animation:ticker ${speed}s linear infinite;`">
         <span v-for="n in 4" :key="n" class="flex items-center gap-8 pr-8 flex-shrink-0">
           <span v-for="item in items" :key="item + n" class="inline-flex items-center gap-8">
-            <span class="font-mono text-[9px] tracking-[0.4em] uppercase" style="color:rgba(245,240,232,0.16);">{{ item }}</span>
-            <span style="color:rgba(201,150,58,0.22);" class="text-xs">✦</span>
+            <span class="font-mono text-[9px] tracking-[0.4em] uppercase" style="color:rgba(244,247,249,0.16);">{{ item }}</span>
+            <span style="color:rgba(255,59,59,0.22);" class="text-xs">✦</span>
           </span>
         </span>
       </div>
@@ -53,8 +53,8 @@ const props = withDefaults(defineProps<{
   flip?: boolean  // balik arah lengkung
   speed?: number  // durasi animasi ticker (detik)
 }>(), {
-  from: '#0C0A07',
-  to: '#080604',
+  from: '#14151A',
+  to: '#0C0D10',
   flip: false,
   speed: 28,
 })

@@ -1,83 +1,83 @@
 <template>
-  <div class="min-h-screen bg-[#080604] flex font-body">
-    <aside class="w-56 min-h-screen bg-[#0C0A07] border-r fixed left-0 top-0 flex flex-col z-40" style="border-color:rgba(201,150,58,0.08);">
-      <div class="px-6 py-7 border-b" style="border-color:rgba(201,150,58,0.08);">
+  <div class="min-h-screen bg-[#0C0D10] flex font-body">
+    <aside class="w-56 min-h-screen bg-[#14151A] border-r fixed left-0 top-0 flex flex-col z-40" style="border-color:rgba(255,59,59,0.08);">
+      <div class="px-6 py-7 border-b" style="border-color:rgba(255,59,59,0.08);">
         <NuxtLink to="/"><p class="font-display text-base tracking-[0.35em] gold-text uppercase">Lemillion</p></NuxtLink>
       </div>
       <nav class="flex-1 py-4 px-3 space-y-0.5">
-        <NuxtLink v-for="item in navItems" :key="item.to" :to="item.to" class="flex items-center gap-3 px-4 py-3 transition-all font-mono text-[10px] tracking-widest uppercase" active-class="bg-[#C9963A]/8 border border-[#C9963A]/15 text-[#C9963A]" style="color:rgba(245,240,232,0.25);">
+        <NuxtLink v-for="item in navItems" :key="item.to" :to="item.to" class="flex items-center gap-3 px-4 py-3 transition-all font-mono text-[10px] tracking-widest uppercase" active-class="bg-[#FF3B3B]/8 border border-[#FF3B3B]/15 text-[#FF3B3B]" style="color:rgba(244,247,249,0.25);">
           <span class="text-base select-none">{{ item.icon }}</span>{{ item.label }}
         </NuxtLink>
       </nav>
-      <div class="px-6 py-5 border-t" style="border-color:rgba(201,150,58,0.08);">
-        <button @click="signOut" class="font-mono text-[9px] tracking-widest uppercase hover:text-[#C9963A] transition-colors" style="color:rgba(201,150,58,0.35);">Sign Out →</button>
+      <div class="px-6 py-5 border-t" style="border-color:rgba(255,59,59,0.08);">
+        <button @click="signOut" class="font-mono text-[9px] tracking-widest uppercase hover:text-[#FF3B3B] transition-colors" style="color:rgba(255,59,59,0.35);">Sign Out →</button>
       </div>
     </aside>
     <main class="ml-56 flex-1 p-8">
       <div class="flex items-end justify-between mb-8">
         <div>
-          <p class="font-mono text-[9px] tracking-[0.5em] uppercase mb-2" style="color:rgba(201,150,58,0.4);">// Kelola</p>
+          <p class="font-mono text-[9px] tracking-[0.5em] uppercase mb-2" style="color:rgba(255,59,59,0.4);">// Kelola</p>
           <h1 class="font-display text-3xl uppercase tracking-wide gold-text">Portfolio</h1>
         </div>
-        <p class="font-body text-sm" style="color:rgba(245,240,232,0.3);">{{ items.length }} karya terdaftar</p>
+        <p class="font-body text-sm" style="color:rgba(244,247,249,0.3);">{{ items.length }} karya terdaftar</p>
       </div>
-      <div class="h-px mb-8 opacity-15" style="background:linear-gradient(to right,transparent,#C9963A,transparent);" />
+      <div class="h-px mb-8 opacity-15" style="background:linear-gradient(to right,transparent,#FF3B3B,transparent);" />
       <div v-if="loading" class="flex items-center justify-center py-20">
-        <div class="w-px h-16" style="background:linear-gradient(to bottom,#C9963A,transparent);" />
+        <div class="w-px h-16" style="background:linear-gradient(to bottom,#FF3B3B,transparent);" />
       </div>
       <div v-else-if="items.length > 0" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
         <div v-for="item in items" :key="item.id" class="group relative border overflow-hidden" style="border-color:rgba(255,255,255,0.05);">
-          <div class="aspect-[4/5] relative" style="background:linear-gradient(135deg,#1a1208,#2a1e10,#1a1208);">
+          <div class="aspect-[4/5] relative" style="background:linear-gradient(135deg,#1D1F27,#262830,#1D1F27);">
             <img v-if="getImageUrl(item.cover_url)" :src="getImageUrl(item.cover_url)" :alt="item.title" class="w-full h-full object-cover" @error="($event.target as HTMLImageElement).style.display='none'" />
-            <div class="absolute inset-0 bg-gradient-to-t from-[#080604]/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-end gap-2 pb-4">
-              <button @click="openEdit(item)" class="font-mono text-[8px] px-2 py-1 border transition-all" style="color:#F5F0E8;border-color:rgba(255,255,255,0.18);">✎ Edit Link</button>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0C0D10]/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-end gap-2 pb-4">
+              <button @click="openEdit(item)" class="font-mono text-[8px] px-2 py-1 border transition-all" style="color:#F4F7F9;border-color:rgba(255,255,255,0.18);">✎ Edit Link</button>
               <div class="flex gap-2">
-                <button @click="toggleFeatured(item)" class="font-mono text-[8px] px-2 py-1 border transition-all" :style="item.is_featured ? 'color:#C9963A;border-color:rgba(201,150,58,0.4);' : 'color:rgba(245,240,232,0.3);border-color:rgba(255,255,255,0.1);'">★ Featured</button>
-                <button @click="togglePublished(item)" class="font-mono text-[8px] px-2 py-1 border transition-all" :style="item.is_published ? 'color:rgba(52,211,153,0.7);border-color:rgba(52,211,153,0.25);' : 'color:rgba(245,240,232,0.2);border-color:rgba(255,255,255,0.06);'">{{ item.is_published ? '✓ Live' : '○ Draft' }}</button>
+                <button @click="toggleFeatured(item)" class="font-mono text-[8px] px-2 py-1 border transition-all" :style="item.is_featured ? 'color:#FF3B3B;border-color:rgba(255,59,59,0.4);' : 'color:rgba(244,247,249,0.3);border-color:rgba(255,255,255,0.1);'">★ Featured</button>
+                <button @click="togglePublished(item)" class="font-mono text-[8px] px-2 py-1 border transition-all" :style="item.is_published ? 'color:rgba(52,211,153,0.7);border-color:rgba(52,211,153,0.25);' : 'color:rgba(244,247,249,0.2);border-color:rgba(255,255,255,0.06);'">{{ item.is_published ? '✓ Live' : '○ Draft' }}</button>
               </div>
             </div>
           </div>
           <div class="p-3">
-            <p class="font-mono text-[8px] tracking-widest uppercase mb-0.5" style="color:rgba(201,150,58,0.4);">{{ item.categories?.name ?? '—' }}</p>
-            <p class="font-body text-xs truncate" style="color:rgba(245,240,232,0.55);">{{ item.title }}</p>
-            <p class="font-mono text-[8px] mt-1 truncate" :style="item.demo_url ? 'color:rgba(52,211,153,0.6);' : 'color:rgba(245,240,232,0.15);'">
+            <p class="font-mono text-[8px] tracking-widest uppercase mb-0.5" style="color:rgba(255,59,59,0.4);">{{ item.categories?.name ?? '—' }}</p>
+            <p class="font-body text-xs truncate" style="color:rgba(244,247,249,0.55);">{{ item.title }}</p>
+            <p class="font-mono text-[8px] mt-1 truncate" :style="item.demo_url ? 'color:rgba(52,211,153,0.6);' : 'color:rgba(244,247,249,0.15);'">
               {{ item.demo_url ? '🔗 ' + item.demo_url : 'Belum ada link demo' }}
             </p>
           </div>
         </div>
       </div>
       <div v-else class="text-center py-20 border" style="border-color:rgba(255,255,255,0.04);">
-        <p class="font-serif text-xl italic mb-3" style="color:rgba(245,240,232,0.18);">Belum ada portfolio.</p>
-        <p class="font-mono text-[9px] tracking-widest uppercase" style="color:rgba(245,240,232,0.10);">Tambah data via neon/02_seed.sql atau query manual di Neon Console.</p>
+        <p class="font-serif text-xl italic mb-3" style="color:rgba(244,247,249,0.18);">Belum ada portfolio.</p>
+        <p class="font-mono text-[9px] tracking-widest uppercase" style="color:rgba(244,247,249,0.10);">Tambah data via neon/02_seed.sql atau query manual di Neon Console.</p>
       </div>
     </main>
 
     <!-- ══ EDIT LINK MODAL ══ -->
     <Transition name="modal">
       <div v-if="editing" class="fixed inset-0 z-50 flex items-center justify-center px-6" style="background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);" @click.self="closeEdit">
-        <div class="w-full max-w-md border p-7" style="background:#0C0A07;border-color:rgba(201,150,58,0.2);">
-          <p class="font-mono text-[9px] tracking-[0.4em] uppercase mb-2" style="color:rgba(201,150,58,0.5);">// Edit Link Proyek</p>
+        <div class="w-full max-w-md border p-7" style="background:#14151A;border-color:rgba(255,59,59,0.2);">
+          <p class="font-mono text-[9px] tracking-[0.4em] uppercase mb-2" style="color:rgba(255,59,59,0.5);">// Edit Link Proyek</p>
           <h2 class="font-display text-xl uppercase tracking-wide gold-text mb-6 truncate">{{ editing.title }}</h2>
 
           <label class="block mb-4">
-            <span class="font-mono text-[9px] tracking-widest uppercase block mb-2" style="color:rgba(245,240,232,0.4);">Live Demo URL</span>
+            <span class="font-mono text-[9px] tracking-widest uppercase block mb-2" style="color:rgba(244,247,249,0.4);">Live Demo URL</span>
             <input
               v-model="editForm.demo_url"
               type="url"
               placeholder="https://contoh-proyek.com"
-              class="w-full px-4 py-3 font-body text-sm bg-transparent border outline-none transition-colors focus:border-[#C9963A]"
-              style="border-color:rgba(255,255,255,0.1);color:#F5F0E8;"
+              class="w-full px-4 py-3 font-body text-sm bg-transparent border outline-none transition-colors focus:border-[#FF3B3B]"
+              style="border-color:rgba(255,255,255,0.1);color:#F4F7F9;"
             />
           </label>
 
           <label class="block mb-6">
-            <span class="font-mono text-[9px] tracking-widest uppercase block mb-2" style="color:rgba(245,240,232,0.4);">Source Code URL (opsional)</span>
+            <span class="font-mono text-[9px] tracking-widest uppercase block mb-2" style="color:rgba(244,247,249,0.4);">Source Code URL (opsional)</span>
             <input
               v-model="editForm.repo_url"
               type="url"
               placeholder="https://github.com/username/repo"
-              class="w-full px-4 py-3 font-body text-sm bg-transparent border outline-none transition-colors focus:border-[#C9963A]"
-              style="border-color:rgba(255,255,255,0.1);color:#F5F0E8;"
+              class="w-full px-4 py-3 font-body text-sm bg-transparent border outline-none transition-colors focus:border-[#FF3B3B]"
+              style="border-color:rgba(255,255,255,0.1);color:#F4F7F9;"
             />
           </label>
 
@@ -88,9 +88,9 @@
               @click="saveEdit"
               :disabled="saving"
               class="flex-1 font-mono text-[10px] tracking-[0.3em] uppercase px-6 py-3 transition-all disabled:opacity-50"
-              style="background:linear-gradient(135deg,#C9963A,#E8C96A,#C9963A);color:#1a1208;font-weight:700;"
+              style="background:linear-gradient(135deg,#FF3B3B,#F5C518,#FF3B3B);color:#1D1F27;font-weight:700;"
             >{{ saving ? 'Menyimpan…' : 'Simpan' }}</button>
-            <button @click="closeEdit" class="font-mono text-[10px] tracking-[0.3em] uppercase px-6 py-3 border transition-all" style="border-color:rgba(255,255,255,0.12);color:rgba(245,240,232,0.4);">Batal</button>
+            <button @click="closeEdit" class="font-mono text-[10px] tracking-[0.3em] uppercase px-6 py-3 border transition-all" style="border-color:rgba(255,255,255,0.12);color:rgba(244,247,249,0.4);">Batal</button>
           </div>
         </div>
       </div>

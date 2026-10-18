@@ -1,11 +1,11 @@
 <template>
   <div ref="containerRef" class="relative mx-auto" style="width:280px;height:460px;">
     <!-- anchor -->
-    <div class="absolute left-1/2 -translate-x-1/2 top-0 w-2.5 h-2.5 rounded-full z-20" style="background:#C9963A;box-shadow:0 0 10px rgba(201,150,58,0.6);" />
+    <div class="absolute left-1/2 -translate-x-1/2 top-0 w-2.5 h-2.5 rounded-full z-20" style="background:#FF3B3B;box-shadow:0 0 10px rgba(255,59,59,0.6);" />
 
     <!-- rope -->
     <svg class="absolute inset-0 z-10 pointer-events-none overflow-visible" width="100%" height="100%">
-      <path :d="ropePath" fill="none" stroke="rgba(201,150,58,0.4)" stroke-width="2" />
+      <path :d="ropePath" fill="none" stroke="rgba(255,59,59,0.4)" stroke-width="2" />
     </svg>
 
     <!-- card -->
@@ -14,11 +14,11 @@
       :style="cardStyle"
       @pointerdown="onPointerDown"
     >
-      <div class="w-[210px] p-2.5 pt-3.5" style="background:linear-gradient(155deg,#efe7d8,#d9cead 40%,#efe7d8);box-shadow:0 20px 45px rgba(0,0,0,0.55);border-radius:4px;">
+      <div class="w-[210px] p-2.5 pt-3.5" style="background:linear-gradient(155deg,#E4EAEE,#C9D1D6 40%,#E4EAEE);box-shadow:0 20px 45px rgba(0,0,0,0.55);border-radius:4px;">
         <!-- clip hole -->
-        <div class="absolute left-1/2 -translate-x-1/2 top-1.5 w-8 h-2.5 rounded-full" style="background:#0C0A07;opacity:0.5;" />
+        <div class="absolute left-1/2 -translate-x-1/2 top-1.5 w-8 h-2.5 rounded-full" style="background:#14151A;opacity:0.5;" />
 
-        <div class="relative overflow-hidden" style="aspect-ratio:3/4;background:linear-gradient(135deg,#1a1208,#2a1e10,#1a1208);border-radius:2px;">
+        <div class="relative overflow-hidden" style="aspect-ratio:3/4;background:linear-gradient(135deg,#1D1F27,#262830,#1D1F27);border-radius:2px;">
           <img
             v-if="avatarUrl"
             :src="avatarUrl"
@@ -33,8 +33,8 @@
           <div class="absolute inset-0" style="background:linear-gradient(180deg,transparent 55%,rgba(12,10,7,0.75) 100%);" />
 
           <div class="absolute bottom-0 left-0 right-0 p-3">
-            <p class="font-display text-[13px] uppercase tracking-wide leading-tight" style="color:#F5F0E8;">{{ name }}</p>
-            <p class="font-mono text-[8px] tracking-[0.25em] uppercase mt-0.5" style="color:#C9963A;">{{ role }}</p>
+            <p class="font-display text-[13px] uppercase tracking-wide leading-tight" style="color:#F4F7F9;">{{ name }}</p>
+            <p class="font-mono text-[8px] tracking-[0.25em] uppercase mt-0.5" style="color:#FF3B3B;">{{ role }}</p>
           </div>
         </div>
 
@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <p class="intro-item absolute -bottom-2 left-1/2 -translate-x-1/2 font-mono text-[8px] tracking-[0.3em] uppercase whitespace-nowrap" style="color:rgba(245,240,232,0.18);">
+    <p class="intro-item absolute -bottom-2 left-1/2 -translate-x-1/2 font-mono text-[8px] tracking-[0.3em] uppercase whitespace-nowrap" style="color:rgba(244,247,249,0.18);">
       ↔ Tarik kartunya
     </p>
   </div>

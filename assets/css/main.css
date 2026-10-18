@@ -3,11 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --gold: #C9963A;
-  --gold-light: #E8C96A;
-  --gold-dark: #A87B2C;
-  --bg-main: #0C0A07;
-  --ivory: #F5F0E8;
+  --gold: #FF3B3B;
+  --red: #D9141B;
+  --deep: #9C0B11;
+  --coin: #F5C518;
+  --gold-light: #F5C518;
+  --gold-dark: #D9141B;
+  --bg-main: #14151A;
+  --ivory: #F4F7F9;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -15,33 +18,33 @@
 html { scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
-  background-color: #0C0A07;
-  color: #F5F0E8;
-  font-family: 'DM Sans', sans-serif;
+  background-color: #14151A;
+  color: #F4F7F9;
+  font-family: 'Barlow', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #0C0A07; }
-::-webkit-scrollbar-thumb { background: #6B4918; border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: #C9963A; }
+::-webkit-scrollbar-track { background: #14151A; }
+::-webkit-scrollbar-thumb { background: #6E080C; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #FF3B3B; }
 
 /* Selection */
-::selection { background: rgba(201,150,58,0.25); color: #F5F0E8; }
+::selection { background: rgba(255,59,59,0.25); color: #F4F7F9; }
 
 /* Page transitions */
 .page-enter-active, .page-leave-active { transition: opacity 0.3s ease; }
 .page-enter-from, .page-leave-to { opacity: 0; }
 
 /* Font helpers */
-.font-display { font-family: 'Cinzel', serif !important; }
-.font-mono-custom { font-family: 'Space Mono', monospace !important; }
+.font-display { font-family: 'Big Shoulders Display', serif !important; }
+.font-mono-custom { font-family: 'Share Tech Mono', monospace !important; }
 
 /* Gold text (gradient statis, tanpa shimmer supaya tidak terasa "AI-generated") */
 .gold-text {
-  background: linear-gradient(135deg, #C9963A, #E8C96A);
+  background: linear-gradient(135deg, #FF3B3B, #F5C518);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -87,3 +90,24 @@ body {
 @media (prefers-reduced-motion: reduce) {
   [data-aos] { transition: none; }
 }
+
+/* ═════ Tema HITSTOP (arcade merah / ink) ═════ */
+body {
+  background-image:
+    radial-gradient(circle, rgba(255,90,90,.55) 1px, transparent 1.6px),
+    radial-gradient(circle, rgba(255,255,255,.4) 1px, transparent 1.6px);
+  background-size: 150px 170px, 95px 120px;
+  background-position: 0 0, 60px 80px;
+  background-attachment: fixed;
+}
+/* sudut siku-siku di semua elemen */
+[class*="rounded"], .lm-glass { border-radius: 0 !important; }
+/* judul: condensed tebal huruf besar, tracking dirapatkan */
+.font-display { font-family: 'Big Shoulders Display', Impact, 'Arial Narrow', sans-serif !important; font-weight: 900; letter-spacing: .02em !important; line-height: .9; }
+.font-mono-custom { font-family: 'Share Tech Mono', ui-monospace, monospace !important; }
+/* "gold-text" kini putih dengan bayangan merah ala judul HITSTOP */
+.gold-text { background: none; -webkit-text-fill-color: currentColor; color: #F4F7F9; text-shadow: 3px 3px 0 var(--deep); }
+/* navbar: bar datar dengan garis merah, bukan pil kaca */
+.lm-glass { background: #14151A !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border: 0 !important; border-bottom: 3px solid var(--red) !important; box-shadow: none !important; }
+.lm-glass-sheen { display: none !important; }
+:focus-visible { outline: 3px solid var(--coin); outline-offset: 3px; }

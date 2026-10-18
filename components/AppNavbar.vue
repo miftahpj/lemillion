@@ -7,27 +7,27 @@
       <span class="lm-glass-sheen" aria-hidden="true" />
 
       <NuxtLink to="/" class="group relative z-10 flex flex-col leading-none">
-        <p class="font-display text-base md:text-lg tracking-[0.35em] gold-text uppercase">Lemillion</p>
-        <p class="font-mono text-[7px] md:text-[8px] tracking-[0.4em] uppercase mt-0.5" style="color:rgba(201,150,58,0.5);">Web Developer</p>
+        <p class="font-display text-base md:text-lg tracking-[0.35em] gold-text uppercase">// Lemillion</p>
+        <p class="font-mono text-[7px] md:text-[8px] tracking-[0.4em] uppercase mt-0.5" style="color:rgba(255,59,59,0.5);">Web Developer</p>
       </NuxtLink>
 
       <nav class="hidden md:flex items-center gap-8 relative z-10">
         <NuxtLink v-for="l in links" :key="l.to" :to="l.to"
-          class="font-display text-[11px] tracking-[0.25em] uppercase transition-colors duration-300 hover:text-[#C9963A]"
-          style="color:rgba(245,240,232,0.55);"
-          active-class="!text-[#C9963A]"
+          class="font-display text-[11px] tracking-[0.25em] uppercase transition-colors duration-300 hover:text-[#FF3B3B]"
+          style="color:rgba(244,247,249,0.55);"
+          active-class="!text-[#FF3B3B]"
         >{{ l.label }}</NuxtLink>
       </nav>
 
       <a href="mailto:miftahpauzanjamil@gmail.com"
-        class="hidden md:block relative z-10 font-mono text-[10px] tracking-[0.2em] uppercase px-5 py-2.5 rounded-full border border-[#C9963A]/30 text-[#C9963A] hover:bg-[#C9963A]/10 transition-all duration-300">
+        class="hidden md:block relative z-10 font-mono text-[10px] tracking-[0.2em] uppercase px-5 py-2.5 rounded-full border border-[#FF3B3B]/30 text-[#FF3B3B] hover:bg-[#FF3B3B]/10 transition-all duration-300">
         Hubungi Saya
       </a>
 
       <button @click="open = !open" class="md:hidden relative z-10 flex flex-col gap-1.5 p-2" aria-label="Menu">
-        <span class="block w-5 h-px bg-[#C9963A] transition-transform duration-300" :class="open ? 'translate-y-[6.5px] rotate-45' : ''" />
-        <span class="block w-5 h-px bg-[#C9963A] transition-opacity duration-300" :class="open ? 'opacity-0' : ''" />
-        <span class="block w-5 h-px bg-[#C9963A] transition-transform duration-300" :class="open ? '-translate-y-[6.5px] -rotate-45' : ''" />
+        <span class="block w-5 h-px bg-[#FF3B3B] transition-transform duration-300" :class="open ? 'translate-y-[6.5px] rotate-45' : ''" />
+        <span class="block w-5 h-px bg-[#FF3B3B] transition-opacity duration-300" :class="open ? 'opacity-0' : ''" />
+        <span class="block w-5 h-px bg-[#FF3B3B] transition-transform duration-300" :class="open ? '-translate-y-[6.5px] -rotate-45' : ''" />
       </button>
     </div>
 
@@ -35,12 +35,12 @@
       <div v-if="open" class="lm-glass md:hidden mt-2 rounded-[22px] px-6 py-6 flex flex-col gap-4 max-w-7xl mx-auto relative overflow-hidden">
         <span class="lm-glass-sheen" aria-hidden="true" />
         <NuxtLink v-for="l in links" :key="l.to" :to="l.to" @click="open=false"
-          class="relative z-10 font-display text-sm tracking-[0.3em] uppercase" style="color:rgba(245,240,232,0.65);"
-          active-class="!text-[#C9963A]"
+          class="relative z-10 font-display text-sm tracking-[0.3em] uppercase" style="color:rgba(244,247,249,0.65);"
+          active-class="!text-[#FF3B3B]"
         >
           {{ l.label }}
         </NuxtLink>
-        <a href="mailto:miftahpauzanjamil@gmail.com" class="relative z-10 font-mono text-xs tracking-widest uppercase text-[#C9963A] border border-[#C9963A]/30 rounded-full px-5 py-3 text-center">Hubungi Saya</a>
+        <a href="mailto:miftahpauzanjamil@gmail.com" class="relative z-10 font-mono text-xs tracking-widest uppercase text-[#FF3B3B] border border-[#FF3B3B]/30 rounded-full px-5 py-3 text-center">Hubungi Saya</a>
       </div>
     </Transition>
   </header>

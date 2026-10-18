@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-[#0C0A07]">
+  <div class="min-h-screen bg-[#14151A]">
     <IntroScreen />
     <AppNavbar />
     <main>
