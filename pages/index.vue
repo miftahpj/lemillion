@@ -1,408 +1,141 @@
 <template>
-  <div>
-
-    <!-- ══ HERO ══ -->
-    <section class="relative min-h-screen flex flex-col justify-end overflow-hidden bg-[#14151A]">
-      <div class="absolute inset-0 z-0">
-        <img
-          v-if="heroImgUrl"
-          :src="heroImgUrl"
-          alt="Hero"
-          class="w-full h-full object-cover object-center"
-          style="animation:subtleZoom 20s ease-in-out infinite alternate;"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-          @error="heroImgFailed = true"
-        />
-        <div class="absolute inset-0" style="background:linear-gradient(135deg,#14151A 0%,#1D1F27 50%,#14151A 100%);" />
-        <div class="absolute inset-0 bg-gradient-to-r from-[#14151A]/85 via-[#14151A]/30 to-transparent" />
-        <div class="absolute inset-0 bg-gradient-to-t from-[#14151A]/80 via-transparent to-[#14151A]/20" />
-      </div>
-
-      <div class="absolute inset-0 z-0 pointer-events-none">
-        <div v-for="i in 5" :key="i" class="absolute top-0 bottom-0 w-px" :style="`left:${i*20}%;background:rgba(255,59,59,0.03);`" />
-      </div>
-
-      <div class="relative z-10 max-w-7xl mx-auto px-8 md:px-16 pb-28 pt-44 w-full flex items-end justify-between gap-10">
-        <div class="max-w-3xl">
-          <div class="flex items-center gap-4 mb-8" data-aos="fade-up">
-            <div class="h-px w-16" style="background:linear-gradient(to right,transparent,#FF3B3B);" />
-            <span class="font-mono text-[10px] tracking-[0.5em] uppercase" style="color:rgba(255,59,59,0.65);">
-              {{ profile?.tagline ?? 'Web Developer' }} · {{ profile?.location ?? 'Tasikmalaya' }}
-            </span>
-          </div>
-
-          <h1 data-aos="fade-up" data-aos-delay="100" class="mb-6">
-            <template v-if="profile?.name">
-              <span
-                v-for="(word, i) in heroNameWords" :key="i"
-                :class="['block font-display uppercase leading-none tracking-wider', Number(i) === heroNameWords.length - 1 ? 'gold-text' : '']"
-                :style="`font-size:clamp(3.2rem,9vw,8rem);${Number(i) < heroNameWords.length - 1 ? 'color:rgba(244,247,249,0.92);' : ''}`"
-              >{{ word }}</span>
-            </template>
-            <template v-else>
-              <span class="block font-display uppercase leading-none tracking-wider" style="font-size:clamp(3.2rem,9vw,8rem);color:rgba(244,247,249,0.92);">Miftah</span>
-              <span class="block font-display uppercase leading-none tracking-wider gold-text" style="font-size:clamp(3.2rem,9vw,8rem);">Pauzan Jamil</span>
-            </template>
-          </h1>
-
-          <p class="font-serif text-xl md:text-2xl italic leading-relaxed mb-12 max-w-xl" style="color:rgba(244,247,249,0.42);" data-aos="fade-up" data-aos-delay="200">
-            "{{ profile?.bio ?? 'Membangun website yang cepat, rapi, dan enak dipakai — dari landing page sampai sistem informasi.' }}"
-          </p>
-
-          <div class="flex flex-wrap items-center gap-5" data-aos="fade-up" data-aos-delay="300">
-            <NuxtLink to="/portfolio" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-10 py-4 transition-all duration-300 hover:-translate-y-0.5" style="background:#FF3B3B;color:#1D1F27;font-weight:700;">
-              Lihat Portfolio
-            </NuxtLink>
-            <NuxtLink to="/contact" class="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.3em] uppercase px-10 py-4 border transition-all duration-300 hover:bg-[#FF3B3B]/8" style="border-color:rgba(255,59,59,0.35);color:#FF3B3B;">
-              Diskusikan Proyek <span>→</span>
-            </NuxtLink>
-          </div>
-        </div>
-
-        <div class="hidden lg:block flex-shrink-0 self-start -mt-8" data-aos="fade-left" data-aos-delay="200">
-          <ClientOnly>
-            <NameCard
-              v-if="isDesktop"
-              :avatar-url="profileAvatarUrl"
-              :name="profile?.name ?? 'Miftah Pauzan Jamil'"
-              :role="profile?.tagline ?? 'Web Developer'"
-            />
-          </ClientOnly>
-        </div>
-      </div>
-
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2">
-        <span class="font-mono text-[8px] tracking-[0.4em] uppercase" style="color:rgba(244,247,249,0.15);">Scroll</span>
-        <div class="w-px h-12" style="background:linear-gradient(to bottom,rgba(255,59,59,0.35),transparent);" />
+  <div class="arc">
+    <section id="top" class="hero red">
+      <p class="lbl">▮▮ Web Developer · {{ profile?.location || 'Tasikmalaya' }}</p>
+      <h1><span>Build.</span><span>Launch.</span><span>Last.</span></h1>
+      <p class="d">{{ profile?.tagline || 'Landing page, company profile, hingga sistem informasi' }} — <b>dibuat cepat, awet dipakai.</b></p>
+      <div class="row"><a class="btn s" href="#work">Lihat karya ↗</a><NuxtLink class="btn" to="/contact">▶ Ajak kerja sama</NuxtLink></div>
+      <div class="stats">
+        <div v-for="(s, i) in stats" :key="s.label"><span class="lbl">{{ s.label }} {{ s.value }}</span><i :style="{ '--n': 4 + (i % 3) }" /></div>
       </div>
     </section>
 
-    <!-- ══ DIVIDER: Hero → Portfolio ══ -->
-    <SectionDivider :items="tickerItems" from="#14151A" to="#14151A" :speed="25" />
+    <section id="work" class="dark">
+      <h2>Pick a level.</h2>
+      <p class="lbl">Proyek pilihan · pakai tombol panah + Enter</p>
+      <div class="combo lbl">Combo<b>X{{ combo }}</b></div>
+      <div v-if="levels.length" class="levels">
+        <button v-for="(p, i) in levels" :key="p.id" class="card" :class="{ sel: i === cur }" :style="cardStyle(p, i)" @click="pick(i)">
+          <b>{{ p.title }}</b><span class="lbl">{{ p.categories?.name || 'Project' }} · {{ p.year }} ★★★</span>
+        </button>
+      </div>
+      <p v-else class="lbl">Belum ada proyek yang dipublikasikan.</p>
+    </section>
+    <div class="toast" :class="{ on: toast }">Full combo!</div>
 
-    <!-- ══ PORTFOLIO PREVIEW ══ -->
-    <section class="py-32 bg-[#14151A] relative">
-      <div class="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-80 h-80 rounded-full pointer-events-none" style="background:rgba(255,59,59,0.025);filter:blur(90px);" />
-      <div class="max-w-7xl mx-auto px-8">
-
-        <div class="mb-14">
-          <div class="flex items-center gap-4 mb-4" data-aos="fade-up">
-            <div class="h-px w-10" style="background:linear-gradient(to right,#FF3B3B,transparent);" />
-            <span class="font-mono text-[10px] tracking-[0.4em] uppercase" style="color:rgba(255,59,59,0.55);">Project Saya</span>
-          </div>
-          <h2 class="font-display uppercase leading-none mb-3 gold-text" style="font-size:clamp(3rem,7vw,6rem);" data-aos="fade-up" data-aos-delay="100">Portfolio</h2>
-          <p class="font-serif text-xl italic max-w-lg" style="color:rgba(244,247,249,0.38);" data-aos="fade-up" data-aos-delay="150">Beberapa proyek pilihan dari perjalanan sebagai web developer.</p>
-        </div>
-
-        <div v-if="loading" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div v-for="i in 6" :key="i" class="aspect-[4/5] animate-pulse" style="background:rgba(255,255,255,0.03);" />
-        </div>
-
-        <div v-else-if="featuredPortfolio.length > 0" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div
-            v-for="(item, idx) in featuredPortfolio" :key="item.id"
-            v-tilt
-            data-aos="fade-up" :data-aos-delay="(idx % 3) * 80"
-            :class="idx === 0 || idx === 3 ? 'aspect-[3/4]' : 'aspect-[4/5]'"
-            class="group relative overflow-hidden"
-            style="background:#1D1F27;"
-          >
-            <NuxtLink :to="`/portfolio/${item.id}`" class="block w-full h-full">
-              <img
-                v-if="getImageUrl(item.cover_url)"
-                :src="getImageUrl(item.cover_url)"
-                :alt="item.title"
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                loading="lazy" decoding="async"
-              />
-              <div v-else class="w-full h-full" :style="getCategoryGradient(item.categories?.slug)" />
-
-              <div class="absolute inset-0 bg-gradient-to-t from-[#14151A]/85 via-transparent to-transparent opacity-70 group-hover:opacity-95 transition-opacity duration-500" />
-              <div class="absolute inset-0 border border-transparent group-hover:border-[#FF3B3B]/20 transition-all duration-500" />
-
-              <div class="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-all duration-400 translate-y-2 group-hover:translate-y-0">
-                <span class="font-mono text-[9px] tracking-[0.3em] uppercase px-3 py-1.5" style="color:#FF3B3B;background:rgba(12,10,7,0.85);border:1px solid rgba(255,59,59,0.2);">
-                  {{ item.categories?.name ?? '—' }}
-                </span>
-              </div>
-
-              <div class="absolute bottom-0 left-0 right-0 p-5 translate-y-1 group-hover:translate-y-0 transition-transform duration-400">
-                <p class="font-mono text-[9px] tracking-widest uppercase mb-1" style="color:rgba(255,59,59,0.55);">{{ item.year }}</p>
-                <h3 class="font-display text-base tracking-wide group-hover:text-[#F5C518] transition-colors" style="color:#F4F7F9;">{{ item.title }}</h3>
-              </div>
-            </NuxtLink>
-          </div>
-        </div>
-
-        <div v-else class="text-center py-16 border" style="border-color:rgba(255,59,59,0.08);">
-          <p class="font-serif text-xl italic" style="color:rgba(244,247,249,0.2);">Portfolio belum ada. Tambah data lewat neon/02_seed.sql atau panel admin.</p>
-        </div>
-
-        <div class="flex justify-center mt-16" data-aos="fade-up">
-          <NuxtLink to="/portfolio" class="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.3em] uppercase px-10 py-4 border transition-all duration-300 hover:bg-[#FF3B3B]/8" style="border-color:rgba(255,59,59,0.3);color:#FF3B3B;">
-            Lihat Semua Karya <span>→</span>
-          </NuxtLink>
+    <section id="boss" class="red">
+      <p class="lbl">Boss · {{ sel?.title || 'Launch week' }}</p>
+      <div class="hp"><i :style="{ width: hp + '%' }" /></div>
+      <p class="lbl">Studi kasus unggulan · {{ sel?.year }}</p>
+      <div v-if="sel" class="boss">
+        <div><h2>{{ sel.title }}</h2><p>{{ sel.description }}</p></div>
+        <div class="atk">
+          <button v-for="(a, j) in attacks" :key="a" class="a" :class="{ hit: hitIdx.includes(j) }" @click="hit(j)">
+            <span class="lbl">Attack 0{{ j + 1 }}</span><em>▶</em>{{ a }}
+          </button>
         </div>
       </div>
     </section>
 
-    <!-- ══ DIVIDER: Portfolio → About ══ -->
-    <SectionDivider :items="dividerItemsAbout" from="#14151A" to="#0C0D10" />
+    <section id="ko" class="red" :class="{ pop: ko }">
+      <h2>K.O.</h2><p class="lbl">Project cleared</p><p class="st">★★</p>
+      <NuxtLink v-if="sel" class="btn s" :to="`/portfolio/${sel.id}`">Buka studi kasus ↗</NuxtLink>
+    </section>
 
-    <!-- ══ ABOUT ══ -->
-    <section class="py-32 bg-[#0C0D10] relative">
-      <div class="hidden md:block absolute right-0 top-1/4 w-96 h-96 rounded-full pointer-events-none" style="background:rgba(255,59,59,0.025);filter:blur(110px);" />
-      <div class="max-w-7xl mx-auto px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-          <div class="relative" data-aos="fade-right">
-            <div class="absolute -top-4 -left-4 w-full h-full border z-0" style="border-color:rgba(255,59,59,0.1);" />
-            <div class="relative z-10 aspect-[3/4] overflow-hidden" style="background:linear-gradient(135deg,#1D1F27,#262830,#1D1F27);">
-              <img
-                v-if="profileAvatarUrl"
-                :src="profileAvatarUrl"
-                :alt="profile?.name"
-                class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
-                loading="lazy" decoding="async"
-                @error="avatarImgFailed = true"
-              />
-              <div class="absolute inset-0 flex items-center justify-center" :class="profileAvatarUrl ? 'opacity-0' : ''">
-                <span class="font-display" style="font-size:8rem;color:rgba(255,59,59,0.07);">{{ profile?.name?.charAt(0) ?? 'M' }}</span>
-              </div>
-            </div>
-            <div class="absolute -bottom-4 -right-4 z-20 px-7 py-5 border" style="background:#14151A;border-color:rgba(255,59,59,0.18);">
-              <span class="block font-display text-4xl gold-text">{{ profile?.years_experience ?? 4 }}+</span>
-              <span class="font-mono text-[8px] tracking-[0.3em] uppercase block mt-1" style="color:rgba(244,247,249,0.22);">Tahun Berkarir</span>
-            </div>
-            <svg class="absolute top-0 left-0 z-20" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M0 24V0H24" stroke="#FF3B3B" stroke-width="1.5" stroke-opacity="0.4"/></svg>
-            <svg class="absolute bottom-0 right-0 z-20 rotate-180" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M0 24V0H24" stroke="#FF3B3B" stroke-width="1.5" stroke-opacity="0.4"/></svg>
-          </div>
-
-          <div>
-            <div class="flex items-center gap-4 mb-4" data-aos="fade-up">
-              <div class="h-px w-10" style="background:linear-gradient(to right,#FF3B3B,transparent);" />
-              <span class="font-mono text-[10px] tracking-[0.4em] uppercase" style="color:rgba(255,59,59,0.55);">Tentang Saya</span>
-            </div>
-            <h2 class="font-display uppercase leading-none mb-5 gold-text" style="font-size:clamp(2.5rem,5vw,5rem);" data-aos="fade-up" data-aos-delay="100">
-              About<br/>{{ profile?.name?.split(' ')[0] ?? 'Miftah' }}
-            </h2>
-            <p class="font-serif text-xl italic leading-relaxed mb-5" style="color:rgba(244,247,249,0.52);" data-aos="fade-up" data-aos-delay="150">
-              {{ profile?.bio ?? 'Membangun website yang cepat, rapi, dan enak dipakai — dari landing page sampai sistem informasi.' }}
-            </p>
-            <p class="font-body text-base leading-relaxed mb-10" style="color:rgba(244,247,249,0.32);" data-aos="fade-up" data-aos-delay="200">
-              {{ shortBio }}
-            </p>
-
-            <div class="grid grid-cols-3 gap-0 border mb-10" style="border-color:rgba(255,59,59,0.10);" data-aos="fade-up" data-aos-delay="250">
-              <div v-for="(stat, i) in aboutStats" :key="stat.label" class="py-5 px-4 text-center" :style="i < 2 ? 'border-right:1px solid rgba(255,59,59,0.10);' : ''">
-                <span class="block font-display text-3xl mb-1 gold-text">{{ stat.value }}</span>
-                <span class="font-mono text-[8px] tracking-[0.25em] uppercase" style="color:rgba(244,247,249,0.2);">{{ stat.label }}</span>
-              </div>
-            </div>
-
-            <NuxtLink to="/about" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-8 py-3.5 transition-all duration-300 hover:-translate-y-0.5" style="background:#FF3B3B;color:#1D1F27;font-weight:700;" data-aos="fade-up" data-aos-delay="300">
-              Baca Selengkapnya
-            </NuxtLink>
-          </div>
+    <section id="services" class="dark" :class="{ open }">
+      <h2>What’s<br>in the box.</h2>
+      <div class="box">//</div>
+      <div class="loot">
+        <div v-for="(s, i) in servicesList.slice(0, 4)" :key="s.id" class="it" :style="{ '--c': rarity[i][1], '--k': i }">
+          <span class="lbl">{{ rarity[i][0] }}</span><b>{{ s.title }}</b><span class="lbl">{{ s.price_label }}</span>
         </div>
       </div>
     </section>
 
-    <!-- ══ DIVIDER: About → Services ══ -->
-    <SectionDivider :items="dividerItemsServices" from="#0C0D10" to="#14151A" flip />
-
-    <!-- ══ SERVICES ══ -->
-    <section class="py-32 bg-[#14151A] relative">
-      <div class="max-w-7xl mx-auto px-8">
-        <div class="text-center mb-14">
-          <div class="flex items-center justify-center gap-4 mb-4" data-aos="fade-up">
-            <div class="h-px w-10" style="background:linear-gradient(to right,transparent,#FF3B3B);" />
-            <span class="font-mono text-[10px] tracking-[0.4em] uppercase" style="color:rgba(255,59,59,0.55);">Layanan yang Tersedia</span>
-            <div class="h-px w-10" style="background:linear-gradient(to left,transparent,#FF3B3B);" />
-          </div>
-          <h2 class="font-display uppercase leading-none gold-text" style="font-size:clamp(3rem,7vw,6rem);" data-aos="fade-up" data-aos-delay="100">Services</h2>
-        </div>
-
-        <div v-if="loading" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div v-for="i in 3" :key="i" class="bg-[#14151A] border p-10 h-64 animate-pulse" style="border-color:rgba(255,59,59,0.08);" />
-        </div>
-
-        <div v-else-if="servicesList.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div
-            v-for="(svc, idx) in servicesList" :key="svc.id"
-            class="group relative bg-[#14151A] border p-10 transition-all duration-500 hover:-translate-y-1 hover:border-[#FF3B3B]/25 overflow-hidden"
-            style="border-color:rgba(255,59,59,0.10);"
-            data-aos="fade-up" :data-aos-delay="idx * 100"
-          >
-            <div class="h-px w-0 group-hover:w-full transition-all duration-700 mb-8" style="background:linear-gradient(to right,#FF3B3B,#F5C518);" />
-            <span class="font-mono text-[9px] tracking-[0.4em] mb-4 block" style="color:rgba(255,59,59,0.28);">{{ String(idx+1).padStart(2,'0') }}</span>
-            <ServiceIcon :icon="svc.icon" class="w-9 h-9 mb-5" style="color:#FF3B3B;" />
-            <h3 class="font-display text-2xl tracking-wider mb-3 uppercase group-hover:text-[#F5C518] transition-colors" style="color:rgba(244,247,249,0.72);">{{ svc.title }}</h3>
-            <p class="font-body text-sm leading-relaxed mb-5" style="color:rgba(244,247,249,0.28);">{{ svc.description }}</p>
-            <div class="flex items-end gap-2 mb-5">
-              <span class="font-mono text-[9px] tracking-widest uppercase" style="color:rgba(255,59,59,0.4);">{{ svc.price_label }}</span>
-              <span class="font-display text-xl gold-text">{{ formatPrice(svc.price_min) }}</span>
-            </div>
-            <ul class="space-y-2 mb-7">
-              <li v-for="f in svc.features" :key="f" class="flex items-center gap-3 font-body text-xs" style="color:rgba(244,247,249,0.26);">
-                <span class="w-4 h-px flex-shrink-0" style="background:rgba(255,59,59,0.3);" />{{ f }}
-              </li>
-            </ul>
-            <NuxtLink to="/contact" class="inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.3em] uppercase group-hover:text-[#FF3B3B] transition-colors" style="color:rgba(255,59,59,0.38);">
-              {{ svc.cta_label }} <span class="group-hover:translate-x-1 transition-transform duration-300">→</span>
-            </NuxtLink>
-          </div>
-        </div>
-
-        <div v-else class="text-center py-10 border" style="border-color:rgba(255,59,59,0.08);">
-          <p class="font-serif italic" style="color:rgba(244,247,249,0.2);">Services belum ada.</p>
-        </div>
-      </div>
+    <section id="final" class="red">
+      <p class="lbl">Final round</p><h2>Proyekmu.<br>Giliran saya.</h2>
+      <NuxtLink class="btn s" to="/contact">Mulai kampanye ↗</NuxtLink>
     </section>
 
-    <!-- ══ DIVIDER: Services → Testimonials ══ -->
-    <SectionDivider :items="dividerItemsTestimonials" from="#14151A" to="#0C0D10" />
-
-    <!-- ══ TESTIMONIALS ══ -->
-    <section class="py-32 bg-[#0C0D10]">
-      <div class="max-w-7xl mx-auto px-8">
-        <div class="text-center mb-14">
-          <div class="flex items-center justify-center gap-4 mb-4" data-aos="fade-up">
-            <div class="h-px w-10" style="background:linear-gradient(to right,transparent,#FF3B3B);" />
-            <span class="font-mono text-[10px] tracking-[0.4em] uppercase" style="color:rgba(255,59,59,0.55);">Feedback</span>
-            <div class="h-px w-10" style="background:linear-gradient(to left,transparent,#FF3B3B);" />
-          </div>
-          <h2 class="font-display uppercase leading-none gold-text" style="font-size:clamp(3rem,7vw,6rem);" data-aos="fade-up" data-aos-delay="100">Testimonials</h2>
-        </div>
-
-        <div v-if="testimonials.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div
-            v-for="(t, idx) in testimonials" :key="t.id"
-            class="relative p-8 border hover:border-[#FF3B3B]/25 transition-all duration-500 hover:-translate-y-1 overflow-hidden"
-            style="background:rgba(255,255,255,0.02);border-color:rgba(255,255,255,0.05);"
-            data-aos="fade-up" :data-aos-delay="idx * 100"
-          >
-            <div class="absolute top-0 left-0 right-0 h-px" style="background:linear-gradient(to right,transparent,rgba(255,59,59,0.25),transparent);" />
-            <div class="flex gap-1 mb-4">
-              <span v-for="i in t.rating" :key="i" class="text-sm" style="color:rgba(255,59,59,0.55);">★</span>
-            </div>
-            <p class="font-serif text-lg italic leading-relaxed mb-6 relative z-10" style="color:rgba(244,247,249,0.52);">"{{ t.quote }}"</p>
-            <div class="h-px mb-5" style="background:linear-gradient(to right,transparent,rgba(255,59,59,0.12),transparent);" />
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full border flex items-center justify-center flex-shrink-0" style="background:rgba(255,59,59,0.08);border-color:rgba(255,59,59,0.2);">
-                <span class="font-display text-sm" style="color:#FF3B3B;">{{ t.client_name.charAt(0) }}</span>
-              </div>
-              <div>
-                <p class="font-display text-sm tracking-wide" style="color:rgba(244,247,249,0.62);">{{ t.client_name }}</p>
-                <p class="font-mono text-[8px] tracking-[0.2em] uppercase mt-0.5" style="color:rgba(255,59,59,0.42);">{{ t.client_role }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div v-else-if="!loading" class="text-center py-10">
-          <p class="font-serif italic" style="color:rgba(244,247,249,0.2);">Testimonials belum ada.</p>
-        </div>
-      </div>
+    <section id="cont" class="dark">
+      <h2>{{ gameOver ? 'Game over.' : 'Continue?' }} <b v-if="!gameOver">{{ cd }}</b></h2>
+      <div class="yn"><button class="btn" @click="restart">Y – Yes</button><button class="btn" @click="end">N – No</button></div>
     </section>
-
-    <!-- ══ DIVIDER: Testimonials → CTA ══ -->
-    <SectionDivider :items="dividerItemsCta" from="#0C0D10" to="#14151A" flip />
-
-    <!-- ══ CTA ══ -->
-    <section class="relative py-36 overflow-hidden bg-[#14151A]">
-      <div class="relative z-10 max-w-4xl mx-auto px-8 text-center">
-        <div class="flex items-center justify-center gap-4 mb-10" data-aos="fade-down">
-          <div class="h-px w-20" style="background:linear-gradient(to right,transparent,rgba(255,59,59,0.35));" />
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0L10 5.5H16L11 9L13 16L8 12.5L3 16L5 9L0 5.5H6L8 0Z" fill="#FF3B3B" fill-opacity="0.35"/></svg>
-          <div class="h-px w-20" style="background:linear-gradient(to left,transparent,rgba(255,59,59,0.35));" />
-        </div>
-        <h2 class="font-display uppercase leading-none mb-7 gold-text" style="font-size:clamp(2.6rem,6.5vw,5.5rem);" data-aos="fade-up" data-aos-delay="100">Ayo Membangun<br/>Website Bersama Saya</h2>
-        <p class="font-serif text-xl italic leading-relaxed mb-12 max-w-xl mx-auto" style="color:rgba(244,247,249,0.32);" data-aos="fade-up" data-aos-delay="200">
-          Ceritakan kebutuhan website atau sistem kamu. Mari kita rancang bersama.
-        </p>
-        <div class="flex flex-wrap items-center justify-center gap-5" data-aos="fade-up" data-aos-delay="300">
-          <NuxtLink to="/contact" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-12 py-5 transition-all duration-300 hover:-translate-y-0.5" style="background:#FF3B3B;color:#1D1F27;font-weight:700;">Diskusikan Proyek</NuxtLink>
-          <a :href="`mailto:${profile?.email ?? 'miftahpauzanjamil@gmail.com'}`" class="inline-flex items-center font-mono text-[11px] tracking-[0.3em] uppercase px-12 py-5 border transition-all duration-300" style="border-color:rgba(255,59,59,0.32);color:#FF3B3B;">
-            {{ profile?.email ?? 'miftahpauzanjamil@gmail.com' }}
-          </a>
-        </div>
-      </div>
-    </section>
-
   </div>
 </template>
 
 <script setup lang="ts">
 useSeoMeta({
   title: 'Miftah Pauzan Jamil (Lemillion) — Web Developer Tasikmalaya',
-  description: 'Portfolio resmi Miftah Pauzan Jamil — sering juga dicari dengan ejaan Miftah Fauzan Jamil — dikenal sebagai Lemillion, Web Developer di Tasikmalaya sejak 2022. Landing page, company profile, hingga sistem informasi.',
-  ogTitle: 'Miftah Pauzan Jamil (Lemillion) — Web Developer Tasikmalaya',
-  ogDescription: 'Portfolio resmi Miftah Pauzan Jamil (kadang dieja Miftah Fauzan Jamil), dikenal sebagai Lemillion — Web Developer di Tasikmalaya sejak 2022.',
+  description: 'Portfolio Miftah Pauzan Jamil (Lemillion), Web Developer di Tasikmalaya sejak 2022. Landing page, company profile, hingga sistem informasi.',
 })
-
-const { fetchAll, profile, portfolioList, servicesList, testimonials, loading, getImageUrl, getProfileImageUrl, formatPrice } = useSiteData()
-
-// NameCard cuma dibuat (mount) di layar besar, supaya HP/tablet tidak
-// menjalankan loop animasi drag-nya sama sekali (hemat CPU & baterai).
-const isDesktop = useMediaQuery('(min-width: 1024px)')
-
-// Data (profile, portfolio unggulan, services, dst) di-fetch SSR lewat
-// fetchAll() di bawah — sudah SIAP begitu HTML pertama sampai ke browser,
-// tidak ada lagi jeda "kosong dulu baru keisi".
+const { fetchAll, profile, portfolioList, servicesList, getImageUrl } = useSiteData()
 await fetchAll()
 
-const heroImgFailed = ref(false)
-const avatarImgFailed = ref(false)
-const featuredPortfolio = computed(() => portfolioList.value)
-const heroImgUrl        = computed(() => heroImgFailed.value ? '' : getProfileImageUrl(profile.value?.hero_image_url))
-const profileAvatarUrl  = computed(() => avatarImgFailed.value ? '' : getProfileImageUrl(profile.value?.avatar_url))
-
-const heroNameWords = computed(() => {
-  if (!profile.value?.name) return ['Miftah', 'Pauzan Jamil']
-  return profile.value.name.trim().split(' ')
-})
-
-// Bio singkat dari bio_extended (2 kalimat pertama)
-const shortBio = computed(() => {
-  const bio = profile.value?.bio_extended ?? ''
-  const sentences = bio.split(/[.!?]+/).filter((s: string) => s.trim()).slice(0, 2)
-  return sentences.join('. ') + (sentences.length ? '.' : '')
-})
-
-const aboutStats = computed(() => [
-  { value: `${profile.value?.years_experience ?? 4}+`,  label: 'Years' },
-  { value: `${profile.value?.projects_count ?? 20}+`,    label: 'Projects' },
-  { value: `${profile.value?.certifications_count ?? 4}`, label: 'Certificates' },
+const stats = computed(() => [
+  { value: `${profile.value?.years_experience ?? 4}+`, label: 'Years' },
+  { value: `${profile.value?.projects_count ?? 20}+`, label: 'Projects' },
+  { value: `${profile.value?.clients_count ?? 10}+`, label: 'Clients' },
 ])
-
-// Gradient fallback per kategori (kalau screenshot proyek belum diupload)
-const getCategoryGradient = (slug: string) => {
-  const map: Record<string, string> = {
-    'landing-page':    'background:linear-gradient(135deg,#2A0A0D,#3A1114,#2A0A0D);',
-    'company-profile': 'background:linear-gradient(135deg,#0d1520,#1a2535,#0d1520);',
-    'web-app':         'background:linear-gradient(135deg,#0a1a12,#142a1e,#0a1a12);',
-    'e-commerce':      'background:linear-gradient(135deg,#240A10,#2E0F16,#240A10);',
-    'api-backend':     'background:linear-gradient(135deg,#141414,#242424,#141414);',
-  }
-  return (map[slug] ?? 'background:linear-gradient(135deg,#1D1F27,#262830,#1D1F27);') + 'width:100%;height:100%;'
+const levels = computed(() => portfolioList.value.slice(0, 3))
+const grads = ['#ff3d6e,#d9141b', '#9aff3d,#14b84a', '#2fd4ff,#2f5bff']
+const rarity = [['Legendary', '#F5C518'], ['Epic', '#b56cff'], ['Rare', '#3fa9ff'], ['Uncommon', '#2fe36d']]
+const cardStyle = (p: any, i: number) => {
+  let u = ''
+  try { u = getImageUrl(p.cover_url || p.image_url) } catch {}
+  return { '--g': `linear-gradient(160deg,${grads[i % 3]})`, '--img': u ? `url("${u}")` : 'none' }
 }
 
-const tickerItems = computed(() => {
-  const loc = profile.value?.location ?? 'Tasikmalaya'
-  return ['Web Developer', 'Landing Page', 'Company Profile', 'Web App', 'Sistem Informasi', loc, 'Est. 2022']
+const cur = ref(0), seen = ref<number[]>([]), toast = ref(false), hitIdx = ref<number[]>([])
+const cd = ref(9), gameOver = ref(false), open = ref(false)
+let bt: any, ct: any, inLevels = false, inCont = false
+
+const sel = computed(() => levels.value[cur.value])
+const combo = computed(() => seen.value.length)
+const attacks = computed(() => {
+  const p: any = sel.value
+  const l = String(p?.tech_stack || '').split(/[,/·|]+/).map((s) => s.trim()).filter(Boolean)
+  return (l.length ? l : p?.tags?.length ? p.tags : ['Nuxt', 'Tailwind', 'PostgreSQL', 'SEO', 'Deploy']).slice(0, 5)
 })
+const hp = computed(() => 100 - (hitIdx.value.length / (attacks.value.length || 1)) * 100)
+const ko = computed(() => attacks.value.length > 0 && hitIdx.value.length >= attacks.value.length)
 
-// Teks ticker untuk tiap divider antar-section — dibuat berbeda-beda
-// supaya tidak monoton, tapi tetap satu nafas dengan identitas Lemillion.
-const dividerItemsAbout        = ['Tentang Saya', 'Perjalanan Karir', 'Cerita Singkat', `${profile.value?.years_experience ?? 4}+ Tahun`, 'Dedikasi']
-const dividerItemsServices     = ['Layanan', 'Landing Page', 'Web App', 'Sistem Informasi', 'Konsultasi']
-const dividerItemsTestimonials = ['Kata Klien', 'Kepercayaan', 'Kolaborasi', 'Hasil Nyata', 'Testimoni']
-const dividerItemsCta          = ['Mari Berkarya', 'Diskusi Proyek', 'Terbuka Untuk Kolaborasi', 'Hubungi Saya']
+function pick(i: number) {
+  const n = levels.value.length
+  if (!n) return
+  cur.value = (i + n) % n
+  if (!seen.value.includes(cur.value)) seen.value.push(cur.value)
+  hitIdx.value = []
+  if (seen.value.length === n && n > 1) { toast.value = true; setTimeout(() => (toast.value = false), 1600) }
+}
+const hit = (j: number) => { if (!hitIdx.value.includes(j)) hitIdx.value.push(j) }
+function battle() {
+  clearInterval(bt)
+  let k = 0
+  bt = setInterval(() => { if (k >= attacks.value.length) return clearInterval(bt); hit(k++) }, 500)
+}
+function start() {
+  clearInterval(ct); gameOver.value = false; cd.value = 9
+  ct = setInterval(() => { if (--cd.value <= 0) { gameOver.value = true; clearInterval(ct) } }, 1000)
+}
+function end() { clearInterval(ct); gameOver.value = true }
+function restart() {
+  clearInterval(ct); clearInterval(bt); seen.value = []; hitIdx.value = []; cur.value = 0; open.value = false
+  scrollTo({ top: 0, behavior: 'smooth' })
+}
+function onKey(e: KeyboardEvent) {
+  if (inLevels && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) { e.preventDefault(); pick(cur.value + (e.key === 'ArrowRight' ? 1 : -1)) }
+  else if (inLevels && e.key === 'Enter') document.getElementById('boss')?.scrollIntoView({ behavior: 'smooth' })
+  else if (inCont && /^[yn]$/i.test(e.key)) e.key.toLowerCase() === 'y' ? restart() : end()
+}
+onMounted(() => {
+  const obs = (id: string, fn: (v: boolean) => void) =>
+    new IntersectionObserver(([e]) => fn(e.isIntersecting), { threshold: 0.35 }).observe(document.getElementById(id)!)
+  obs('work', (v) => (inLevels = v))
+  obs('boss', (v) => v && battle())
+  obs('services', (v) => v && (open.value = true))
+  obs('cont', (v) => { inCont = v; if (v) start() })
+  addEventListener('keydown', onKey)
+})
+onBeforeUnmount(() => { clearInterval(bt); clearInterval(ct); removeEventListener('keydown', onKey) })
 </script>
-
-<style>
-@keyframes subtleZoom { from { transform: scale(1); }     to { transform: scale(1.06); } }
-@keyframes ticker     { from { transform: translateX(0); } to { transform: translateX(-25%); } }
-</style>
