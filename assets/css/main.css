@@ -15,7 +15,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; overflow-x: hidden; }
+html { scroll-behavior: smooth; }
 
 body {
   background-color: #14151A;
@@ -210,3 +210,17 @@ table th{font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em}
 .dmg{position:absolute;top:22vh;font:900 40px var(--disp);animation:up .9s forwards;pointer-events:none}@keyframes up{to{transform:translateY(-50px);opacity:0}}
 @media(max-width:800px){.about,.frm{grid-template-columns:1fr}.levels{grid-template-columns:1fr}.art{opacity:.3;width:70vw}.keys{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* ═════ Halaman terpisah (About / Portfolio / Services / Contact) ═════ */
+.arc-nav{position:sticky;top:0}
+.arc .phero{min-height:58vh;padding-top:16vh}.arc .phero h1{font-size:clamp(56px,11vw,170px)}
+.levels.all{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}a.card{text-decoration:none}.card .tags{opacity:.8}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2vw;margin-top:6vh}.steps .it{opacity:1;transform:none;--c:#F5C518}
+.faqs{display:grid;gap:10px;margin-top:5vh;max-width:900px}.faq{border:2px solid #fff6;background:#0008}
+.faq summary{cursor:pointer;padding:16px 18px;font:700 20px var(--disp);text-transform:uppercase;letter-spacing:.03em;list-style:none}
+.faq summary::after{content:"+";float:right;color:#FF3B3B}.faq[open] summary::after{content:"–"}.faq p{padding:0 18px 18px;max-width:70ch}
+.cta{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;min-height:60vh}
+.cgrid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:4vw;align-items:start}.cgrid .frm{width:100%;margin-top:0}
+.side{display:grid;gap:12px}.side-i{display:flex;flex-direction:column;gap:4px;padding:16px;border:2px solid #fff6;background:#0008;color:#F4F7F9;text-decoration:none}
+.side-i b{font:900 24px var(--disp);text-transform:uppercase;word-break:break-word}.slots.one{grid-template-columns:1fr 1fr;margin-top:0}
+@media(max-width:800px){.cgrid{grid-template-columns:1fr}.arc-nav{flex-wrap:wrap;gap:10px 16px}.arc-nav nav{display:flex;order:3;width:100%;overflow-x:auto;gap:18px}.arc-nav>.btn{display:none}}

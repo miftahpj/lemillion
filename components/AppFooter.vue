@@ -8,5 +8,5 @@
 </template>
 
 <script setup lang="ts">
-const links = [{ to: '/#work', label: 'Work' }, { to: '/#services', label: 'Services' }, { to: '/#about', label: 'About' }, { to: '/#final', label: 'Contact' }]
+const links = [{ to: '/portfolio', label: 'Work' }, { to: '/services', label: 'Services' }, { to: '/about', label: 'About' }, { to: '/contact', label: 'Contact' }]
 </script>

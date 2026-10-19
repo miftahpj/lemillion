@@ -37,17 +37,24 @@ export const createSessionToken = (email: string, secret: string): string => {
 
 export const verifySessionToken = (token: string, secret: string): { email: string } | null => {
   if (!token) return null
-  const parts = token.split('.')
-  if (parts.length !== 3) return null
-  const [email, expiresStr, signature] = parts
-  const payload = `${email}.${expiresStr}`
+  // Format token: "<email>.<expires>.<signature>". Email BOLEH mengandung titik (mis. nama@gmail.com),
+  // jadi JANGAN di-split('.') — ambil signature & expires dari BELAKANG.
+  const sigIdx = token.lastIndexOf('.')
+  if (sigIdx < 1) return null
+  const payload = token.slice(0, sigIdx)
+  const signature = token.slice(sigIdx + 1)
+  const expIdx = payload.lastIndexOf('.')
+  if (expIdx < 1) return null
+  const email = payload.slice(0, expIdx)
+  const expiresStr = payload.slice(expIdx + 1)
   const expected = sign(payload, secret)
 
   const sigBuffer = Buffer.from(signature)
   const expBuffer = Buffer.from(expected)
   if (sigBuffer.length !== expBuffer.length || !timingSafeEqual(sigBuffer, expBuffer)) return null
 
-  if (Date.now() > Number(expiresStr)) return null
+  const expires = Number(expiresStr)
+  if (!Number.isFinite(expires) || Date.now() > expires) return null
   return { email }
 }
 
@@ -57,7 +64,8 @@ export const setSessionCookie = (event: H3Event, email: string) => {
   setCookie(event, SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
+    // `secure` hanya bila request memang HTTPS; kalau dipaksa di HTTP, browser membuang cookie-nya
+    secure: getRequestProtocol(event) === 'https',
     path: '/',
     maxAge: SESSION_MAX_AGE,
   })

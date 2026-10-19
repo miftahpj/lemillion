@@ -30,7 +30,7 @@
           <p v-for="(t, i) in bioParas" :key="i">{{ t }}</p>
           <img v-if="sign" class="sign" :src="sign" alt="">
           <div class="stats big"><div v-for="(s, i) in stats" :key="s.label"><span class="lbl">{{ s.label }} {{ s.value }}</span><i :style="{ '--n': 4 + (i % 3) }" /></div></div>
-          <div class="row"><a v-for="s in socials" :key="s[0]" class="btn" :href="s[1]" target="_blank" rel="noopener">{{ s[0] }} ↗</a></div>
+          <div class="row"><a v-for="s in socials" :key="s[0]" class="btn" :href="s[1]" target="_blank" rel="noopener">{{ s[0] }} ↗</a><NuxtLink class="btn s" to="/about">Selengkapnya ↗</NuxtLink></div>
         </div>
       </div>
       <template v-if="awards.length">
@@ -53,6 +53,7 @@
         </button>
       </div>
       <p v-else class="lbl" style="margin-top: 6vh">Belum ada karya di kategori ini.</p>
+      <div class="row" style="margin-top: 5vh"><NuxtLink class="btn" to="/portfolio">Semua level ↗</NuxtLink></div>
     </section>
 
     <section id="boss" class="red">
@@ -78,6 +79,7 @@
     <section id="ko" class="red" :class="{ pop: ko }">
       <h2 class="gl">K.O.</h2><p class="lbl">Campaign cleared</p><p class="st">{{ '★'.repeat(sel?.is_featured ? 3 : 2) }}</p>
       <div class="recap"><span v-for="a in attacks" :key="a" class="lbl">{{ a }}</span></div>
+      <NuxtLink v-if="sel" class="btn s" :to="`/portfolio/${sel.id}`" style="margin-top: 22px">Buka halaman proyek ↗</NuxtLink>
     </section>
 
     <section id="services" class="dark" :class="{ open }">
