@@ -1,29 +1,45 @@
-// composables/usePortfolio.ts — dipakai di panel admin untuk kelola daftar proyek
+// composables/usePortfolio.ts — dipakai di panel admin untuk kelola daftar proyek (tambah / edit / toggle)
 export const usePortfolio = () => {
-  const items   = useState<any[]>('admin_portfolio_items', () => [])
-  const loading = useState<boolean>('admin_portfolio_loading', () => false)
+  const items     = useState<any[]>('admin_portfolio_items', () => [])
+  const loading   = useState<boolean>('admin_portfolio_loading', () => false)
+  const lastError = useState<string>('admin_portfolio_error', () => '')
+  const errMsg = (e: any) => e?.data?.statusMessage || e?.statusMessage || e?.message || 'Terjadi kesalahan. Coba lagi.'
 
-  const fetchPortfolio = async (categorySlug?: string) => {
-    loading.value = true
+  // Pakai /api/portfolio/admin supaya karya berstatus Draft ikut tampil
+  // (endpoint publik /api/portfolio hanya mengirim yang sudah published).
+  const fetchPortfolio = async (silent = false) => {
+    if (!silent) loading.value = true
     try {
-      items.value = await $fetch('/api/portfolio', {
-        query: categorySlug ? { category: categorySlug } : {},
-      })
+      items.value = await $fetch('/api/portfolio/admin')
     } catch (e) {
       console.warn('usePortfolio: gagal fetch', e)
-      items.value = []
+      if (!silent) items.value = []
     } finally {
       loading.value = false
     }
   }
 
-  const updatePortfolioItem = async (id: string, payload: Record<string, any>): Promise<boolean> => {
+  const createPortfolioItem = async (payload: Record<string, any>): Promise<boolean> => {
+    lastError.value = ''
     try {
-      const updated: any = await $fetch(`/api/portfolio/${id}`, { method: 'PATCH', body: payload })
-      const idx = items.value.findIndex((i: any) => i.id === id)
-      if (idx > -1) items.value[idx] = { ...items.value[idx], ...updated }
+      await $fetch('/api/portfolio', { method: 'POST', body: payload })
+      await fetchPortfolio(true)
       return true
     } catch (e) {
+      lastError.value = errMsg(e)
+      console.warn('usePortfolio: gagal tambah', e)
+      return false
+    }
+  }
+
+  const updatePortfolioItem = async (id: string, payload: Record<string, any>): Promise<boolean> => {
+    lastError.value = ''
+    try {
+      await $fetch(`/api/portfolio/${id}`, { method: 'PATCH', body: payload })
+      await fetchPortfolio(true)
+      return true
+    } catch (e) {
+      lastError.value = errMsg(e)
       console.warn('usePortfolio: gagal update', e)
       return false
     }
@@ -35,5 +51,5 @@ export const usePortfolio = () => {
     return `/${path}`
   }
 
-  return { items: readonly(items), loading: readonly(loading), fetchPortfolio, updatePortfolioItem, getImageUrl }
+  return { items: readonly(items), loading: readonly(loading), lastError: readonly(lastError), fetchPortfolio, createPortfolioItem, updatePortfolioItem, getImageUrl }
 }

@@ -14,85 +14,90 @@
       </div>
     </aside>
     <main class="ml-56 flex-1 p-8">
-      <div class="flex items-end justify-between mb-8">
+      <div class="flex items-end justify-between mb-8 gap-4 flex-wrap">
         <div>
           <p class="font-mono text-[9px] tracking-[0.5em] uppercase mb-2" style="color:rgba(255,59,59,0.4);">// Kelola</p>
           <h1 class="font-display text-3xl uppercase tracking-wide gold-text">Portfolio</h1>
         </div>
-        <p class="font-body text-sm" style="color:rgba(244,247,249,0.3);">{{ items.length }} karya terdaftar</p>
+        <div class="flex items-center gap-5">
+          <p class="font-body text-sm" style="color:rgba(244,247,249,0.3);">{{ items.length }} karya · {{ publishedCount }} live</p>
+          <button @click="openNew" class="font-mono text-[10px] tracking-[0.3em] uppercase px-5 py-3 transition-all" style="background:linear-gradient(135deg,#FF3B3B,#F5C518,#FF3B3B);color:#1D1F27;font-weight:700;">＋ Tambah Karya</button>
+        </div>
       </div>
       <div class="h-px mb-8 opacity-15" style="background:linear-gradient(to right,transparent,#FF3B3B,transparent);" />
       <div v-if="loading" class="flex items-center justify-center py-20">
         <div class="w-px h-16" style="background:linear-gradient(to bottom,#FF3B3B,transparent);" />
       </div>
-      <div v-else-if="items.length > 0" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
-        <div v-for="item in items" :key="item.id" class="group relative border overflow-hidden" style="border-color:rgba(255,255,255,0.05);">
-          <div class="aspect-[4/5] relative" style="background:linear-gradient(135deg,#1D1F27,#262830,#1D1F27);">
-            <img v-if="getImageUrl(item.cover_url)" :src="getImageUrl(item.cover_url)" :alt="item.title" class="w-full h-full object-cover" @error="($event.target as HTMLImageElement).style.display='none'" />
-            <div class="absolute inset-0 bg-gradient-to-t from-[#0C0D10]/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-end gap-2 pb-4">
-              <button @click="openEdit(item)" class="font-mono text-[8px] px-2 py-1 border transition-all" style="color:#F4F7F9;border-color:rgba(255,255,255,0.18);">✎ Edit Link</button>
-              <div class="flex gap-2">
-                <button @click="toggleFeatured(item)" class="font-mono text-[8px] px-2 py-1 border transition-all" :style="item.is_featured ? 'color:#FF3B3B;border-color:rgba(255,59,59,0.4);' : 'color:rgba(244,247,249,0.3);border-color:rgba(255,255,255,0.1);'">★ Featured</button>
-                <button @click="togglePublished(item)" class="font-mono text-[8px] px-2 py-1 border transition-all" :style="item.is_published ? 'color:rgba(52,211,153,0.7);border-color:rgba(52,211,153,0.25);' : 'color:rgba(244,247,249,0.2);border-color:rgba(255,255,255,0.06);'">{{ item.is_published ? '✓ Live' : '○ Draft' }}</button>
+      <template v-else>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+          <button @click="openNew" class="add-tile aspect-[4/5] flex flex-col items-center justify-center gap-2 border-2 border-dashed transition-all" style="border-color:rgba(255,59,59,0.35);color:#FF3B3B;">
+            <span class="text-4xl leading-none">＋</span>
+            <span class="font-mono text-[9px] tracking-widest uppercase">Tambah karya baru</span>
+          </button>
+          <div v-for="item in items" :key="item.id" class="group relative border overflow-hidden" :class="{ 'opacity-60': !item.is_published }" style="border-color:rgba(255,255,255,0.05);">
+            <div class="aspect-[4/5] relative" style="background:linear-gradient(135deg,#1D1F27,#262830,#1D1F27);">
+              <img v-if="getImageUrl(item.cover_url)" :src="getImageUrl(item.cover_url)" :alt="item.title" class="w-full h-full object-cover" @error="($event.target as HTMLImageElement).style.display='none'" />
+              <span v-if="!item.is_published" class="absolute top-2 left-2 font-mono text-[8px] tracking-widest uppercase px-2 py-1" style="background:#14151A;color:rgba(244,247,249,0.6);border:1px solid rgba(255,255,255,0.15);">Draft</span>
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0C0D10]/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-end gap-2 pb-4">
+                <button @click="openEdit(item)" class="font-mono text-[8px] px-3 py-1 border transition-all" style="color:#F4F7F9;border-color:rgba(255,255,255,0.18);">✎ Edit</button>
+                <div class="flex gap-2">
+                  <button @click="toggleFeatured(item)" class="font-mono text-[8px] px-2 py-1 border transition-all" :style="item.is_featured ? 'color:#FF3B3B;border-color:rgba(255,59,59,0.4);' : 'color:rgba(244,247,249,0.3);border-color:rgba(255,255,255,0.1);'">★ Featured</button>
+                  <button @click="togglePublished(item)" class="font-mono text-[8px] px-2 py-1 border transition-all" :style="item.is_published ? 'color:rgba(52,211,153,0.7);border-color:rgba(52,211,153,0.25);' : 'color:rgba(244,247,249,0.2);border-color:rgba(255,255,255,0.06);'">{{ item.is_published ? '✓ Live' : '○ Draft' }}</button>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="p-3">
-            <p class="font-mono text-[8px] tracking-widest uppercase mb-0.5" style="color:rgba(255,59,59,0.4);">{{ item.categories?.name ?? '—' }}</p>
-            <p class="font-body text-xs truncate" style="color:rgba(244,247,249,0.55);">{{ item.title }}</p>
-            <p class="font-mono text-[8px] mt-1 truncate" :style="item.demo_url ? 'color:rgba(52,211,153,0.6);' : 'color:rgba(244,247,249,0.15);'">
-              {{ item.demo_url ? '🔗 ' + item.demo_url : 'Belum ada link demo' }}
-            </p>
+            <div class="p-3">
+              <p class="font-mono text-[8px] tracking-widest uppercase mb-0.5" style="color:rgba(255,59,59,0.4);">{{ item.categories?.name ?? '—' }} · {{ item.year }}</p>
+              <p class="font-body text-xs truncate" style="color:rgba(244,247,249,0.55);">{{ item.title }}</p>
+              <p class="font-mono text-[8px] mt-1 truncate" :style="item.demo_url ? 'color:rgba(52,211,153,0.6);' : 'color:rgba(244,247,249,0.15);'">{{ item.demo_url ? '🔗 ' + item.demo_url : 'Belum ada link demo' }}</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div v-else class="text-center py-20 border" style="border-color:rgba(255,255,255,0.04);">
-        <p class="font-serif text-xl italic mb-3" style="color:rgba(244,247,249,0.18);">Belum ada portfolio.</p>
-        <p class="font-mono text-[9px] tracking-widest uppercase" style="color:rgba(244,247,249,0.10);">Tambah data via neon/02_seed.sql atau query manual di Neon Console.</p>
-      </div>
+        <p v-if="!items.length" class="font-mono text-[10px] tracking-widest uppercase mt-8" style="color:rgba(244,247,249,0.3);">Belum ada karya — klik "Tambah Karya" untuk mulai.</p>
+      </template>
     </main>
 
-    <!-- ══ EDIT LINK MODAL ══ -->
+    <!-- ══ FORM TAMBAH / EDIT KARYA ══ -->
     <Transition name="modal">
-      <div v-if="editing" class="fixed inset-0 z-50 flex items-center justify-center px-6" style="background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);" @click.self="closeEdit">
-        <div class="w-full max-w-md border p-7" style="background:#14151A;border-color:rgba(255,59,59,0.2);">
-          <p class="font-mono text-[9px] tracking-[0.4em] uppercase mb-2" style="color:rgba(255,59,59,0.5);">// Edit Link Proyek</p>
-          <h2 class="font-display text-xl uppercase tracking-wide gold-text mb-6 truncate">{{ editing.title }}</h2>
+      <div v-if="showForm" class="fixed inset-0 z-50 overflow-y-auto px-4 py-8" style="background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);" @click.self="closeForm">
+        <form class="w-full max-w-2xl mx-auto border p-7" style="background:#14151A;border-color:rgba(255,59,59,0.2);" @submit.prevent="save">
+          <p class="font-mono text-[9px] tracking-[0.4em] uppercase mb-2" style="color:rgba(255,59,59,0.5);">// {{ editingId ? 'Edit Karya' : 'Karya Baru' }}</p>
+          <h2 class="font-display text-2xl uppercase tracking-wide gold-text mb-6 truncate">{{ form.title || 'Tanpa judul' }}</h2>
 
-          <label class="block mb-4">
-            <span class="font-mono text-[9px] tracking-widest uppercase block mb-2" style="color:rgba(244,247,249,0.4);">Live Demo URL</span>
-            <input
-              v-model="editForm.demo_url"
-              type="url"
-              placeholder="https://contoh-proyek.com"
-              class="w-full px-4 py-3 font-body text-sm bg-transparent border outline-none transition-colors focus:border-[#FF3B3B]"
-              style="border-color:rgba(255,255,255,0.1);color:#F4F7F9;"
-            />
-          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label class="sm:col-span-2"><span class="lab">Judul *</span><input v-model="form.title" required class="fld" placeholder="Nama proyek" /></label>
+            <label><span class="lab">Kategori</span>
+              <select v-model="form.category_id" class="fld"><option value="">— Tanpa kategori —</option><option v-for="c in categories" :key="c.id" :value="c.id">{{ c.name }}</option></select>
+            </label>
+            <label><span class="lab">Tahun</span><input v-model="form.year" type="number" min="2000" max="2100" class="fld" /></label>
+            <label class="sm:col-span-2"><span class="lab">Deskripsi singkat</span><textarea v-model="form.description" rows="2" class="fld" /></label>
+            <label class="sm:col-span-2"><span class="lab">Cerita / studi kasus</span><textarea v-model="form.story" rows="4" class="fld" /></label>
 
-          <label class="block mb-6">
-            <span class="font-mono text-[9px] tracking-widest uppercase block mb-2" style="color:rgba(244,247,249,0.4);">Source Code URL (opsional)</span>
-            <input
-              v-model="editForm.repo_url"
-              type="url"
-              placeholder="https://github.com/username/repo"
-              class="w-full px-4 py-3 font-body text-sm bg-transparent border outline-none transition-colors focus:border-[#FF3B3B]"
-              style="border-color:rgba(255,255,255,0.1);color:#F4F7F9;"
-            />
-          </label>
+            <label><span class="lab">Cover URL / path</span><input v-model="form.cover_url" class="fld" placeholder="https://… atau /images/cover.jpg" /></label>
+            <label><span class="lab">Image URL / path</span><input v-model="form.image_url" class="fld" placeholder="Kosong = pakai cover" /></label>
+            <img v-if="getImageUrl(form.cover_url)" :src="getImageUrl(form.cover_url)" alt="" class="h-24 border sm:col-span-2" style="border-color:rgba(255,255,255,0.12);" @error="($event.target as HTMLImageElement).style.display='none'" />
+            <label class="sm:col-span-2"><span class="lab">Galeri (satu URL per baris)</span><textarea v-model="form.gallery" rows="3" class="fld" /></label>
 
-          <p v-if="saveError" class="font-mono text-[10px] mb-4" style="color:#f87171;">{{ saveError }}</p>
+            <label><span class="lab">Tags (pisahkan koma)</span><input v-model="form.tags" class="fld" placeholder="Nuxt, Tailwind" /></label>
+            <label><span class="lab">Tech stack</span><input v-model="form.tech_stack" class="fld" placeholder="Nuxt, PostgreSQL, Vercel" /></label>
+            <label><span class="lab">Client</span><input v-model="form.client" class="fld" /></label>
+            <label><span class="lab">Role</span><input v-model="form.role" class="fld" /></label>
+            <label><span class="lab">Lokasi</span><input v-model="form.location" class="fld" /></label>
+            <label><span class="lab">Urutan (sort order)</span><input v-model="form.sort_order" type="number" class="fld" placeholder="Kosong = paling akhir" /></label>
+            <label><span class="lab">Live Demo URL</span><input v-model="form.demo_url" type="url" class="fld" placeholder="https://contoh-proyek.com" /></label>
+            <label><span class="lab">Source Code URL</span><input v-model="form.repo_url" type="url" class="fld" placeholder="https://github.com/user/repo" /></label>
+            <label class="sm:col-span-2"><span class="lab">Slug (opsional)</span><input v-model="form.slug" class="fld" placeholder="Kosong = dibuat otomatis dari judul" /></label>
 
-          <div class="flex gap-3">
-            <button
-              @click="saveEdit"
-              :disabled="saving"
-              class="flex-1 font-mono text-[10px] tracking-[0.3em] uppercase px-6 py-3 transition-all disabled:opacity-50"
-              style="background:linear-gradient(135deg,#FF3B3B,#F5C518,#FF3B3B);color:#1D1F27;font-weight:700;"
-            >{{ saving ? 'Menyimpan…' : 'Simpan' }}</button>
-            <button @click="closeEdit" class="font-mono text-[10px] tracking-[0.3em] uppercase px-6 py-3 border transition-all" style="border-color:rgba(255,255,255,0.12);color:rgba(244,247,249,0.4);">Batal</button>
+            <label class="flex items-center gap-3 cursor-pointer"><input v-model="form.is_featured" type="checkbox" class="accent-[#FF3B3B]" /><span class="lab !mb-0">★ Featured</span></label>
+            <label class="flex items-center gap-3 cursor-pointer"><input v-model="form.is_published" type="checkbox" class="accent-[#FF3B3B]" /><span class="lab !mb-0">Tampilkan di website (Live)</span></label>
           </div>
-        </div>
+
+          <p v-if="formError" class="font-mono text-[10px] mt-5" style="color:#f87171;">{{ formError }}</p>
+          <div class="flex gap-3 mt-6">
+            <button type="submit" :disabled="saving" class="flex-1 font-mono text-[10px] tracking-[0.3em] uppercase px-6 py-3 transition-all disabled:opacity-50" style="background:linear-gradient(135deg,#FF3B3B,#F5C518,#FF3B3B);color:#1D1F27;font-weight:700;">{{ saving ? 'Menyimpan…' : editingId ? 'Simpan Perubahan' : 'Tambah Karya' }}</button>
+            <button type="button" @click="closeForm" class="font-mono text-[10px] tracking-[0.3em] uppercase px-6 py-3 border transition-all" style="border-color:rgba(255,255,255,0.12);color:rgba(244,247,249,0.4);">Batal</button>
+          </div>
+        </form>
       </div>
     </Transition>
   </div>
@@ -102,49 +107,73 @@
 definePageMeta({ layout: false, middleware: ['auth'] })
 useHead({ title: 'Portfolio — Admin Lemillion' })
 const { logout } = useAuth()
-const { items, loading, fetchPortfolio, updatePortfolioItem, getImageUrl } = usePortfolio()
+const { items, loading, lastError, fetchPortfolio, createPortfolioItem, updatePortfolioItem, getImageUrl } = usePortfolio()
 const navItems = [
   { to: '/admin', icon: '◈', label: 'Overview' }, { to: '/admin/inquiries', icon: '✉️', label: 'Inquiries' },
   { to: '/admin/portfolio', icon: '🖼️', label: 'Portfolio' }, { to: '/admin/availability', icon: '📅', label: 'Kalender' }, { to: '/admin/profile', icon: '👤', label: 'Profil' },
 ]
-const signOut        = async () => { await logout(); navigateTo('/login') }
-const toggleFeatured = (item: any) => updatePortfolioItem(item.id, { is_featured: !item.is_featured })
+const signOut         = async () => { await logout(); navigateTo('/login') }
+const toggleFeatured  = (item: any) => updatePortfolioItem(item.id, { is_featured: !item.is_featured })
 const togglePublished = (item: any) => updatePortfolioItem(item.id, { is_published: !item.is_published })
-onMounted(fetchPortfolio)
+const publishedCount  = computed(() => items.value.filter((i: any) => i.is_published).length)
 
-// ── Edit link modal (demo_url / repo_url) — supaya tombol "Live Demo"
-// di halaman publik benar-benar mengarah ke website proyeknya.
-const editing   = ref<any | null>(null)
-const editForm  = reactive({ demo_url: '', repo_url: '' })
+const categories = ref<any[]>([])
+onMounted(async () => {
+  fetchPortfolio()
+  try { categories.value = await $fetch('/api/categories') } catch { categories.value = [] }
+})
+
+// ── Form tambah / edit (semua kolom portfolio) ──
+const blank = () => ({
+  title: '', slug: '', category_id: '', year: new Date().getFullYear() as number | string, description: '', story: '',
+  cover_url: '', image_url: '', gallery: '', tags: '', tech_stack: '', client: '', role: '', location: '',
+  demo_url: '', repo_url: '', sort_order: '' as number | string, is_featured: false, is_published: true,
+})
+const form      = reactive(blank())
+const showForm  = ref(false)
+const editingId = ref<string | null>(null)
 const saving    = ref(false)
-const saveError = ref('')
+const formError = ref('')
 
+const openNew = () => { Object.assign(form, blank()); editingId.value = null; formError.value = ''; showForm.value = true }
 const openEdit = (item: any) => {
-  editing.value = item
-  editForm.demo_url = item.demo_url ?? ''
-  editForm.repo_url = item.repo_url ?? ''
-  saveError.value = ''
-}
-const closeEdit = () => { editing.value = null }
-
-const saveEdit = async () => {
-  if (!editing.value) return
-  saving.value = true
-  saveError.value = ''
-  const ok = await updatePortfolioItem(editing.value.id, {
-    demo_url: editForm.demo_url.trim(),
-    repo_url: editForm.repo_url.trim(),
+  Object.assign(form, {
+    title: item.title ?? '', slug: item.slug ?? '', category_id: item.category_id ?? '', year: item.year ?? '',
+    description: item.description ?? '', story: item.story ?? '', cover_url: item.cover_url ?? '', image_url: item.image_url ?? '',
+    gallery: (item.gallery_urls ?? []).join('\n'), tags: (item.tags ?? []).join(', '), tech_stack: item.tech_stack ?? '',
+    client: item.client ?? '', role: item.role ?? '', location: item.location ?? '',
+    demo_url: item.demo_url ?? '', repo_url: item.repo_url ?? '', sort_order: item.sort_order ?? '',
+    is_featured: !!item.is_featured, is_published: !!item.is_published,
   })
-  saving.value = false
-  if (ok) {
-    closeEdit()
-  } else {
-    saveError.value = 'Gagal menyimpan. Coba lagi.'
+  editingId.value = item.id; formError.value = ''; showForm.value = true
+}
+const closeForm = () => { showForm.value = false }
+
+const save = async () => {
+  if (!form.title.trim()) { formError.value = 'Judul wajib diisi.'; return }
+  saving.value = true
+  formError.value = ''
+  const { gallery, ...rest } = form
+  const payload: Record<string, any> = {
+    ...rest,
+    gallery_urls: gallery.split(/\n+/),
+    year: form.year === '' ? undefined : Number(form.year),
+    sort_order: form.sort_order === '' ? undefined : Number(form.sort_order),
   }
+  if (!String(form.slug).trim()) delete payload.slug   // kosong = jangan timpa slug yang ada / buat otomatis
+  const ok = editingId.value ? await updatePortfolioItem(editingId.value, payload) : await createPortfolioItem(payload)
+  saving.value = false
+  if (ok) closeForm()
+  else formError.value = lastError.value || 'Gagal menyimpan. Coba lagi.'
 }
 </script>
 
 <style scoped>
 .modal-enter-active, .modal-leave-active { transition: opacity 0.25s ease; }
 .modal-enter-from, .modal-leave-to { opacity: 0; }
+.lab { display: block; margin-bottom: 6px; font-family: 'Share Tech Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: rgba(244,247,249,0.45); }
+.fld { width: 100%; padding: 11px 14px; font-size: 14px; background: transparent; color: #F4F7F9; border: 1px solid rgba(255,255,255,0.12); outline: none; transition: border-color .2s; }
+.fld:focus { border-color: #FF3B3B; }
+.fld option { color: #14151A; }
+.add-tile:hover { background: rgba(255,59,59,0.08); }
 </style>
