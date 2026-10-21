@@ -61,7 +61,7 @@ Browser  →  /api/*  (Nuxt server routes, server/api/)  →  Neon PostgreSQL (p
 | `inquiries`    | Pesan masuk dari form contact |
 | `availability` | Status ketersediaan proyek per bulan |
 
-Gambar (screenshot proyek, foto profil) **bukan** disimpan sebagai file upload — cukup isi kolom `*_url` dengan link gambar (mis. hasil upload ke imgur/Cloudinary/GitHub, atau taruh filenya di folder `public/` dan pakai path `/nama-file.jpg`).
+Foto proyek (cover & galeri) di-**upload langsung dari perangkat** lewat panel admin. File dikompres otomatis di browser (WebP, maks 1600 px), disimpan di database Neon (tabel `uploaded_images`, dibuat otomatis saat upload pertama) dan disajikan lewat `/api/images/:id`. Kolom `*_url` lama yang berisi link/path tetap berfungsi.
 
 ---
 

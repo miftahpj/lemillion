@@ -73,10 +73,33 @@
             <label class="sm:col-span-2"><span class="lab">Deskripsi singkat</span><textarea v-model="form.description" rows="2" class="fld" /></label>
             <label class="sm:col-span-2"><span class="lab">Cerita / studi kasus</span><textarea v-model="form.story" rows="4" class="fld" /></label>
 
-            <label><span class="lab">Cover URL / path</span><input v-model="form.cover_url" class="fld" placeholder="https://… atau /images/cover.jpg" /></label>
-            <label><span class="lab">Image URL / path</span><input v-model="form.image_url" class="fld" placeholder="Kosong = pakai cover" /></label>
-            <img v-if="getImageUrl(form.cover_url)" :src="getImageUrl(form.cover_url)" alt="" class="h-24 border sm:col-span-2" style="border-color:rgba(255,255,255,0.12);" @error="($event.target as HTMLImageElement).style.display='none'" />
-            <label class="sm:col-span-2"><span class="lab">Galeri (satu URL per baris)</span><textarea v-model="form.gallery" rows="3" class="fld" /></label>
+            <div class="sm:col-span-2">
+              <span class="lab">Foto cover</span>
+              <div class="flex items-center gap-4">
+                <div class="w-28 h-36 border flex items-center justify-center overflow-hidden shrink-0" style="border-color:rgba(255,255,255,0.12);background:#1D1F27;">
+                  <img v-if="getImageUrl(form.cover_url)" :src="getImageUrl(form.cover_url)" alt="" class="w-full h-full object-cover" />
+                  <span v-else class="font-mono text-[8px] tracking-widest uppercase text-center px-2" style="color:rgba(244,247,249,0.3);">Belum ada foto</span>
+                </div>
+                <div class="flex flex-col gap-2 items-start">
+                  <button type="button" class="upl" @click="coverInput?.click()">⬆ {{ form.cover_url ? 'Ganti foto' : 'Upload dari perangkat' }}</button>
+                  <button v-if="form.cover_url" type="button" class="upl" style="color:#f87171;border-color:rgba(248,113,113,0.3);" @click="form.cover_url = ''">✕ Hapus foto</button>
+                  <p class="font-body text-xs" style="color:rgba(244,247,249,0.3);">JPG, PNG, WebP, GIF · dikompres otomatis</p>
+                </div>
+                <input ref="coverInput" type="file" accept="image/*" class="hidden" @change="pickCover" />
+              </div>
+            </div>
+            <div class="sm:col-span-2">
+              <span class="lab">Galeri ({{ form.gallery_urls.length }} foto)</span>
+              <div class="flex flex-wrap gap-3">
+                <div v-for="(g, i) in form.gallery_urls" :key="g + i" class="relative w-24 h-24 border overflow-hidden" style="border-color:rgba(255,255,255,0.12);">
+                  <img :src="getImageUrl(g)" alt="" class="w-full h-full object-cover" />
+                  <button type="button" class="absolute top-1 right-1 w-6 h-6 text-xs" style="background:#14151Acc;color:#f87171;" aria-label="Hapus foto" @click="form.gallery_urls.splice(i, 1)">✕</button>
+                </div>
+                <button type="button" class="upl w-24 h-24 flex flex-col items-center justify-center gap-1" @click="galleryInput?.click()"><span class="text-2xl leading-none">＋</span><span>Tambah</span></button>
+                <input ref="galleryInput" type="file" accept="image/*" multiple class="hidden" @change="pickGallery" />
+              </div>
+            </div>
+            <p v-if="uploading" class="sm:col-span-2 font-mono text-[10px] tracking-widest uppercase" style="color:#F5C518;">Mengunggah {{ uploading }} foto…</p>
 
             <label><span class="lab">Tags (pisahkan koma)</span><input v-model="form.tags" class="fld" placeholder="Nuxt, Tailwind" /></label>
             <label><span class="lab">Tech stack</span><input v-model="form.tech_stack" class="fld" placeholder="Nuxt, PostgreSQL, Vercel" /></label>
@@ -94,7 +117,7 @@
 
           <p v-if="formError" class="font-mono text-[10px] mt-5" style="color:#f87171;">{{ formError }}</p>
           <div class="flex gap-3 mt-6">
-            <button type="submit" :disabled="saving" class="flex-1 font-mono text-[10px] tracking-[0.3em] uppercase px-6 py-3 transition-all disabled:opacity-50" style="background:linear-gradient(135deg,#FF3B3B,#F5C518,#FF3B3B);color:#1D1F27;font-weight:700;">{{ saving ? 'Menyimpan…' : editingId ? 'Simpan Perubahan' : 'Tambah Karya' }}</button>
+            <button type="submit" :disabled="saving || uploading > 0" class="flex-1 font-mono text-[10px] tracking-[0.3em] uppercase px-6 py-3 transition-all disabled:opacity-50" style="background:linear-gradient(135deg,#FF3B3B,#F5C518,#FF3B3B);color:#1D1F27;font-weight:700;">{{ saving ? 'Menyimpan…' : editingId ? 'Simpan Perubahan' : 'Tambah Karya' }}</button>
             <button type="button" @click="closeForm" class="font-mono text-[10px] tracking-[0.3em] uppercase px-6 py-3 border transition-all" style="border-color:rgba(255,255,255,0.12);color:rgba(244,247,249,0.4);">Batal</button>
           </div>
         </form>
@@ -107,7 +130,7 @@
 definePageMeta({ layout: false, middleware: ['auth'] })
 useHead({ title: 'Portfolio — Admin Lemillion' })
 const { logout } = useAuth()
-const { items, loading, lastError, fetchPortfolio, createPortfolioItem, updatePortfolioItem, getImageUrl } = usePortfolio()
+const { items, loading, lastError, fetchPortfolio, createPortfolioItem, updatePortfolioItem, uploadImage, getImageUrl } = usePortfolio()
 const navItems = [
   { to: '/admin', icon: '◈', label: 'Overview' }, { to: '/admin/inquiries', icon: '✉️', label: 'Inquiries' },
   { to: '/admin/portfolio', icon: '🖼️', label: 'Portfolio' }, { to: '/admin/availability', icon: '📅', label: 'Kalender' }, { to: '/admin/profile', icon: '👤', label: 'Profil' },
@@ -126,7 +149,7 @@ onMounted(async () => {
 // ── Form tambah / edit (semua kolom portfolio) ──
 const blank = () => ({
   title: '', slug: '', category_id: '', year: new Date().getFullYear() as number | string, description: '', story: '',
-  cover_url: '', image_url: '', gallery: '', tags: '', tech_stack: '', client: '', role: '', location: '',
+  cover_url: '', gallery_urls: [] as string[], tags: '', tech_stack: '', client: '', role: '', location: '',
   demo_url: '', repo_url: '', sort_order: '' as number | string, is_featured: false, is_published: true,
 })
 const form      = reactive(blank())
@@ -134,32 +157,51 @@ const showForm  = ref(false)
 const editingId = ref<string | null>(null)
 const saving    = ref(false)
 const formError = ref('')
+const origCover = ref(''), uploading = ref(0)
+const coverInput = ref<HTMLInputElement>(), galleryInput = ref<HTMLInputElement>()
+const uploadError = (err: any) => err?.data?.statusMessage || err?.message || 'Upload gagal. Coba lagi.'
+const pickCover = async (e: Event) => {
+  const input = e.target as HTMLInputElement, file = input.files?.[0]
+  input.value = ''
+  if (!file) return
+  uploading.value++; formError.value = ''
+  try { form.cover_url = await uploadImage(file) } catch (err) { formError.value = uploadError(err) } finally { uploading.value-- }
+}
+const pickGallery = async (e: Event) => {
+  const input = e.target as HTMLInputElement, files = [...(input.files ?? [])]
+  input.value = ''
+  formError.value = ''
+  for (const file of files) {
+    uploading.value++
+    try { form.gallery_urls.push(await uploadImage(file)) } catch (err) { formError.value = uploadError(err) } finally { uploading.value-- }
+  }
+}
 
 const openNew = () => { Object.assign(form, blank()); editingId.value = null; formError.value = ''; showForm.value = true }
 const openEdit = (item: any) => {
   Object.assign(form, {
     title: item.title ?? '', slug: item.slug ?? '', category_id: item.category_id ?? '', year: item.year ?? '',
-    description: item.description ?? '', story: item.story ?? '', cover_url: item.cover_url ?? '', image_url: item.image_url ?? '',
-    gallery: (item.gallery_urls ?? []).join('\n'), tags: (item.tags ?? []).join(', '), tech_stack: item.tech_stack ?? '',
+    description: item.description ?? '', story: item.story ?? '', cover_url: item.cover_url ?? '',
+    gallery_urls: [...(item.gallery_urls ?? [])], tags: (item.tags ?? []).join(', '), tech_stack: item.tech_stack ?? '',
     client: item.client ?? '', role: item.role ?? '', location: item.location ?? '',
     demo_url: item.demo_url ?? '', repo_url: item.repo_url ?? '', sort_order: item.sort_order ?? '',
     is_featured: !!item.is_featured, is_published: !!item.is_published,
   })
-  editingId.value = item.id; formError.value = ''; showForm.value = true
+  editingId.value = item.id; origCover.value = item.cover_url ?? ''; formError.value = ''; showForm.value = true
 }
 const closeForm = () => { showForm.value = false }
 
 const save = async () => {
   if (!form.title.trim()) { formError.value = 'Judul wajib diisi.'; return }
+  if (uploading.value) { formError.value = 'Tunggu sampai upload foto selesai.'; return }
   saving.value = true
   formError.value = ''
-  const { gallery, ...rest } = form
   const payload: Record<string, any> = {
-    ...rest,
-    gallery_urls: gallery.split(/\n+/),
+    ...form,
     year: form.year === '' ? undefined : Number(form.year),
     sort_order: form.sort_order === '' ? undefined : Number(form.sort_order),
   }
+  if (editingId.value && form.cover_url !== origCover.value) payload.image_url = form.cover_url // cover diganti → samakan image_url
   if (!String(form.slug).trim()) delete payload.slug   // kosong = jangan timpa slug yang ada / buat otomatis
   const ok = editingId.value ? await updatePortfolioItem(editingId.value, payload) : await createPortfolioItem(payload)
   saving.value = false
@@ -176,4 +218,6 @@ const save = async () => {
 .fld:focus { border-color: #FF3B3B; }
 .fld option { color: #14151A; }
 .add-tile:hover { background: rgba(255,59,59,0.08); }
+.upl { font-family: 'Share Tech Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: .15em; text-transform: uppercase; padding: 9px 14px; border: 1px solid rgba(255,255,255,0.18); color: #F4F7F9; background: transparent; cursor: pointer; transition: all .2s; }
+.upl:hover { border-color: #FF3B3B; color: #FF3B3B; }
 </style>
