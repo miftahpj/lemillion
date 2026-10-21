@@ -60,7 +60,7 @@
     <!-- ══ FORM TAMBAH / EDIT KARYA ══ -->
     <Transition name="modal">
       <div v-if="showForm" class="fixed inset-0 z-50 overflow-y-auto px-4 py-8" style="background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);" @click.self="closeForm">
-        <form class="w-full max-w-2xl mx-auto border p-7" style="background:#14151A;border-color:rgba(255,59,59,0.2);" @submit.prevent="save">
+        <form class="w-full max-w-2xl mx-auto border p-7" style="background:#14151A;border-color:rgba(255,59,59,0.2);" @submit.prevent="save" @dragover.prevent @drop.prevent>
           <p class="font-mono text-[9px] tracking-[0.4em] uppercase mb-2" style="color:rgba(255,59,59,0.5);">// {{ editingId ? 'Edit Karya' : 'Karya Baru' }}</p>
           <h2 class="font-display text-2xl uppercase tracking-wide gold-text mb-6 truncate">{{ form.title || 'Tanpa judul' }}</h2>
 
@@ -75,27 +75,37 @@
 
             <div class="sm:col-span-2">
               <span class="lab">Foto cover</span>
-              <div class="flex items-center gap-4">
+              <div
+                class="dz flex items-center gap-4 p-4" :class="{ 'dz-over': dragCover }"
+                @click="coverInput?.click()"
+                @dragenter.prevent="dragCover = true" @dragover.prevent="dragCover = true"
+                @dragleave.prevent="leaveCover" @drop.prevent="dropCover"
+              >
                 <div class="w-28 h-36 border flex items-center justify-center overflow-hidden shrink-0" style="border-color:rgba(255,255,255,0.12);background:#1D1F27;">
                   <img v-if="getImageUrl(form.cover_url)" :src="getImageUrl(form.cover_url)" alt="" class="w-full h-full object-cover" />
                   <span v-else class="font-mono text-[8px] tracking-widest uppercase text-center px-2" style="color:rgba(244,247,249,0.3);">Belum ada foto</span>
                 </div>
                 <div class="flex flex-col gap-2 items-start">
-                  <button type="button" class="upl" @click="coverInput?.click()">⬆ {{ form.cover_url ? 'Ganti foto' : 'Upload dari perangkat' }}</button>
-                  <button v-if="form.cover_url" type="button" class="upl" style="color:#f87171;border-color:rgba(248,113,113,0.3);" @click="form.cover_url = ''">✕ Hapus foto</button>
-                  <p class="font-body text-xs" style="color:rgba(244,247,249,0.3);">JPG, PNG, WebP, GIF · dikompres otomatis</p>
+                  <p class="font-mono text-[10px] tracking-widest uppercase" :style="dragCover ? 'color:#FF3B3B;' : 'color:rgba(244,247,249,0.7);'">{{ dragCover ? 'Lepaskan foto di sini' : 'Drag & drop foto ke sini' }}</p>
+                  <p class="font-body text-xs" style="color:rgba(244,247,249,0.3);">atau klik area ini untuk pilih dari perangkat · JPG, PNG, WebP, GIF · dikompres otomatis</p>
+                  <button v-if="form.cover_url" type="button" class="upl" style="color:#f87171;border-color:rgba(248,113,113,0.3);" @click.stop="form.cover_url = ''">✕ Hapus foto</button>
                 </div>
-                <input ref="coverInput" type="file" accept="image/*" class="hidden" @change="pickCover" />
+                <input ref="coverInput" type="file" accept="image/*" class="hidden" @click.stop @change="pickCover" />
               </div>
             </div>
             <div class="sm:col-span-2">
               <span class="lab">Galeri ({{ form.gallery_urls.length }} foto)</span>
-              <div class="flex flex-wrap gap-3">
+              <div
+                class="dz flex flex-wrap gap-3 p-4" :class="{ 'dz-over': dragGallery }"
+                @dragenter.prevent="dragGallery = true" @dragover.prevent="dragGallery = true"
+                @dragleave.prevent="leaveGallery" @drop.prevent="dropGallery"
+              >
                 <div v-for="(g, i) in form.gallery_urls" :key="g + i" class="relative w-24 h-24 border overflow-hidden" style="border-color:rgba(255,255,255,0.12);">
                   <img :src="getImageUrl(g)" alt="" class="w-full h-full object-cover" />
                   <button type="button" class="absolute top-1 right-1 w-6 h-6 text-xs" style="background:#14151Acc;color:#f87171;" aria-label="Hapus foto" @click="form.gallery_urls.splice(i, 1)">✕</button>
                 </div>
                 <button type="button" class="upl w-24 h-24 flex flex-col items-center justify-center gap-1" @click="galleryInput?.click()"><span class="text-2xl leading-none">＋</span><span>Tambah</span></button>
+                <p class="self-center font-body text-xs" style="color:rgba(244,247,249,0.3);">{{ dragGallery ? 'Lepaskan untuk upload…' : 'Drag & drop beberapa foto sekaligus ke area ini' }}</p>
                 <input ref="galleryInput" type="file" accept="image/*" multiple class="hidden" @change="pickGallery" />
               </div>
             </div>
@@ -160,21 +170,46 @@ const formError = ref('')
 const origCover = ref(''), uploading = ref(0)
 const coverInput = ref<HTMLInputElement>(), galleryInput = ref<HTMLInputElement>()
 const uploadError = (err: any) => err?.data?.statusMessage || err?.message || 'Upload gagal. Coba lagi.'
-const pickCover = async (e: Event) => {
-  const input = e.target as HTMLInputElement, file = input.files?.[0]
-  input.value = ''
-  if (!file) return
+const uploadCover = async (file: File) => {
   uploading.value++; formError.value = ''
   try { form.cover_url = await uploadImage(file) } catch (err) { formError.value = uploadError(err) } finally { uploading.value-- }
 }
-const pickGallery = async (e: Event) => {
-  const input = e.target as HTMLInputElement, files = [...(input.files ?? [])]
-  input.value = ''
+const uploadGallery = async (files: File[]) => {
   formError.value = ''
   for (const file of files) {
     uploading.value++
     try { form.gallery_urls.push(await uploadImage(file)) } catch (err) { formError.value = uploadError(err) } finally { uploading.value-- }
   }
+}
+const pickCover = async (e: Event) => {
+  const input = e.target as HTMLInputElement, file = input.files?.[0]
+  input.value = ''
+  if (file) await uploadCover(file)
+}
+const pickGallery = async (e: Event) => {
+  const input = e.target as HTMLInputElement, files = [...(input.files ?? [])]
+  input.value = ''
+  await uploadGallery(files)
+}
+
+// ── Drag & drop dari perangkat ──
+const dragCover = ref(false), dragGallery = ref(false)
+// dragleave ikut terpicu saat kursor pindah ke elemen anak → abaikan supaya highlight tidak berkedip
+const stillInside = (e: DragEvent) => (e.currentTarget as HTMLElement).contains(e.relatedTarget as Node | null)
+const leaveCover = (e: DragEvent) => { if (!stillInside(e)) dragCover.value = false }
+const leaveGallery = (e: DragEvent) => { if (!stillInside(e)) dragGallery.value = false }
+const imagesFrom = (e: DragEvent) => [...(e.dataTransfer?.files ?? [])].filter((f) => f.type.startsWith('image/'))
+const dropCover = async (e: DragEvent) => {
+  dragCover.value = false
+  const files = imagesFrom(e)
+  if (!files.length) { formError.value = 'File harus berupa gambar (JPG, PNG, WebP, GIF).'; return }
+  await uploadCover(files[0])
+}
+const dropGallery = async (e: DragEvent) => {
+  dragGallery.value = false
+  const files = imagesFrom(e)
+  if (!files.length) { formError.value = 'File harus berupa gambar (JPG, PNG, WebP, GIF).'; return }
+  await uploadGallery(files)
 }
 
 const openNew = () => { Object.assign(form, blank()); editingId.value = null; formError.value = ''; showForm.value = true }
@@ -219,5 +254,7 @@ const save = async () => {
 .fld option { color: #14151A; }
 .add-tile:hover { background: rgba(255,59,59,0.08); }
 .upl { font-family: 'Share Tech Mono', ui-monospace, monospace; font-size: 9px; letter-spacing: .15em; text-transform: uppercase; padding: 9px 14px; border: 1px solid rgba(255,255,255,0.18); color: #F4F7F9; background: transparent; cursor: pointer; transition: all .2s; }
+.dz { border: 2px dashed rgba(255,255,255,0.14); background: rgba(255,255,255,0.015); transition: all .2s; }
+.dz-over { border-color: #FF3B3B; background: rgba(255,59,59,0.07); }
 .upl:hover { border-color: #FF3B3B; color: #FF3B3B; }
 </style>

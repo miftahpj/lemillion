@@ -1,5 +1,7 @@
 // server/utils/images.ts — penyimpanan foto upload di database (aman untuk Vercel/Netlify yang tidak punya disk permanen)
-export const IMAGE_MAX_BYTES = 4 * 1024 * 1024 // batas body serverless ±4,5 MB; klien sudah mengompres sebelum kirim
+// Batas body serverless sekitar 4.5 MB; klien sudah mengompres sebelum kirim.
+// (Jangan taruh koma + angka di komentar sebaris export: parser auto-import Nitro bisa salah baca jadi export.)
+export const IMAGE_MAX_BYTES = 4 * 1024 * 1024
 
 let ready: Promise<unknown> | null = null
 // Tabel dibuat otomatis saat upload pertama — tidak perlu menjalankan migrasi manual.
