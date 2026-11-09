@@ -68,7 +68,7 @@ const fields = [
 ]
 const navItems = [
   { to: '/admin', icon: '◈', label: 'Overview' }, { to: '/admin/inquiries', icon: '✉️', label: 'Inquiries' },
-  { to: '/admin/portfolio', icon: '🖼️', label: 'Portfolio' }, { to: '/admin/availability', icon: '📅', label: 'Kalender' }, { to: '/admin/profile', icon: '👤', label: 'Profil' },
+  { to: '/admin/portfolio', icon: '🖼️', label: 'Portfolio' }, { to: '/admin/availability', icon: '📅', label: 'Kalender' }, { to: '/admin/so', icon: '📝', label: 'Tugas SO' }, { to: '/admin/profile', icon: '👤', label: 'Profil' },
 ]
 const signOut = async () => { await logout(); navigateTo('/login') }
 const syncForm = () => { if (!profile.value) return; Object.assign(form, { name: profile.value.name, tagline: profile.value.tagline, bio: profile.value.bio, bio_extended: profile.value.bio_extended, location: profile.value.location, email: profile.value.email, whatsapp: profile.value.whatsapp ?? '', github: profile.value.github ?? '', linkedin: profile.value.linkedin ?? '', website: profile.value.website ?? '' }) }

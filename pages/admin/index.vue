@@ -108,6 +108,7 @@ const navItems = computed(() => [
   { to: '/admin/inquiries',    icon: '✉️',  label: 'Inquiries', badge: countByStatus.value.new },
   { to: '/admin/portfolio',    icon: '🖼️',  label: 'Portfolio' },
   { to: '/admin/availability', icon: '📅',  label: 'Kalender' },
+  { to: '/admin/so',           icon: '📝',  label: 'Tugas SO' },
   { to: '/admin/profile',      icon: '👤',  label: 'Profil' },
 ])
 

@@ -100,6 +100,7 @@ export default defineNuxtConfig({
     '/contact':       { swr: 60 },
     '/admin/**':      { swr: false, ssr: false },
     '/login':         { ssr: false },
+    '/so':            { swr: false, headers: { 'X-Robots-Tag': 'noindex, nofollow' } },
   },
 
   experimental: {

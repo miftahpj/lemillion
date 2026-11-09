@@ -143,7 +143,7 @@ const { logout } = useAuth()
 const { items, loading, lastError, fetchPortfolio, createPortfolioItem, updatePortfolioItem, uploadImage, getImageUrl } = usePortfolio()
 const navItems = [
   { to: '/admin', icon: '◈', label: 'Overview' }, { to: '/admin/inquiries', icon: '✉️', label: 'Inquiries' },
-  { to: '/admin/portfolio', icon: '🖼️', label: 'Portfolio' }, { to: '/admin/availability', icon: '📅', label: 'Kalender' }, { to: '/admin/profile', icon: '👤', label: 'Profil' },
+  { to: '/admin/portfolio', icon: '🖼️', label: 'Portfolio' }, { to: '/admin/availability', icon: '📅', label: 'Kalender' }, { to: '/admin/so', icon: '📝', label: 'Tugas SO' }, { to: '/admin/profile', icon: '👤', label: 'Profil' },
 ]
 const signOut         = async () => { await logout(); navigateTo('/login') }
 const toggleFeatured  = (item: any) => updatePortfolioItem(item.id, { is_featured: !item.is_featured })

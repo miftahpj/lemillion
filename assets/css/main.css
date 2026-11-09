@@ -224,3 +224,48 @@ table th{font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em}
 .side{display:grid;gap:12px}.side-i{display:flex;flex-direction:column;gap:4px;padding:16px;border:2px solid #fff6;background:#0008;color:#F4F7F9;text-decoration:none}
 .side-i b{font:900 24px var(--disp);text-transform:uppercase;word-break:break-word}.slots.one{grid-template-columns:1fr 1fr;margin-top:0}
 @media(max-width:800px){.cgrid{grid-template-columns:1fr}.arc-nav{flex-wrap:wrap;gap:10px 16px}.arc-nav nav{display:flex;order:3;width:100%;overflow-x:auto;gap:18px}.arc-nav>.btn{display:none}}
+
+/* ═════ Halaman /so (tugas kuliah Sistem Operasi) ═════ */
+.so-hero{padding:9vh 5vw 4vh}
+.arc .so-hero h1{font-size:clamp(56px,10vw,140px)}
+.so-sub{margin-top:18px;font:13px var(--mono);letter-spacing:.12em;text-transform:uppercase;opacity:.7}
+.so-list{display:grid;gap:22px;padding:2vh 5vw 10vh;max-width:1000px}
+.so-card{border:2px solid #fff6;background:#0008;padding:clamp(18px,3vw,32px);box-shadow:8px 8px 0 #9C0B11}
+.so-card.done{opacity:.72;box-shadow:8px 8px 0 #1c6b3a}
+.so-card.late{border-color:#D9141B}
+.so-card.soon{border-color:#F5C518}
+.so-top{display:flex;flex-direction:column;gap:12px;margin-bottom:18px}
+.arc .so-card h2{font-size:clamp(40px,6vw,72px);line-height:.9}
+.so-meta{display:flex;flex-wrap:wrap;gap:8px}
+.so-chip{border:2px solid #fff9;padding:6px 10px}
+.so-card.done .so-chip.st{background:#2fe36d;border-color:#2fe36d;color:#14151A}
+.so-card.late .so-chip.st{background:#D9141B;border-color:#D9141B}
+.so-card.soon .so-chip.st{background:#F5C518;border-color:#F5C518;color:#14151A}
+.so-imgs{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.so-img{padding:0;border:2px solid #fff9;background:none;cursor:zoom-in}
+.so-img img{display:block;height:150px;width:auto;max-width:100%}
+.so-ans{margin-top:22px}
+.so-ans .rich{padding:0 18px 18px}
+.so-empty{opacity:.6;padding:4vh 0}
+.so-zoom{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:4vw;background:#000e;cursor:zoom-out}
+.so-zoom img{max-width:100%;max-height:82vh;border:3px solid #F4F7F9;background:#14151A}
+.so-foot{padding:26px 5vw;border-top:3px solid #D9141B;background:#0C0D10}
+.so-foot small{opacity:.8;font-size:12px}
+.arc-nav .lbl{opacity:.7}
+@media(max-width:800px){.arc-nav .lbl{display:none}.so-hero{padding-top:6vh}}
+
+/* teks kaya (hasil renderRich): dipakai di /so dan pratinjau admin */
+.rich{font-size:17px;line-height:1.55;max-width:72ch}
+.rich p{margin:0 0 14px}
+.rich h4{font:900 26px var(--disp);text-transform:uppercase;margin:18px 0 8px;color:#F5C518}
+.rich strong{font-weight:700}
+.rich code{font-family:var(--mono);font-size:.92em;background:#ffffff14;border:1px solid #fff3;padding:2px 6px;word-break:break-word}
+.rich a{color:#F5C518;text-decoration:underline;word-break:break-all}
+.rich ul,.rich ol{margin:0 0 14px 1.4em;padding:0}
+.rich ul{list-style:square}.rich ol{list-style:decimal}.rich ol[type="a"]{list-style:lower-alpha}
+.rich li{margin:4px 0;padding-left:4px}.rich li>ul,.rich li>ol{margin:6px 0 4px 1.3em}
+.rich .tbl{overflow-x:auto;margin:6px 0 18px;max-width:100%}
+.rich table{border-collapse:collapse;min-width:min(100%,420px);font-family:var(--mono)}
+.rich th,.rich td{border:2px solid #fff6;padding:9px 16px;text-align:center}
+.rich th{background:#D9141B;font-size:13px}
+.rich td{background:#0006}
